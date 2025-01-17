@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: bronze_streamline
+    database: streamline
+    schema: "{{ 'stellar' if target.database == 'STELLAR' else 'stellar_dev' }}"
+    tables:
+      - name: blocks
+      - name: block_txs
+  - name: crosschain
+    database: "{{ 'crosschain' if target.database == 'STELLAR' else 'crosschain_dev' }}"
+    schema: core
+    tables:
+      - name: address_tags
+      - name: dim_dates
+  - name: crosschain_silver
+    database: "{{ 'crosschain' if target.database == 'STELLAR' else 'crosschain_dev' }}"
+    schema: silver
+    tables:
+      - name: number_sequence
+  - name: github_actions
+    database: STELLAR
+    schema: github_actions
+    tables:
+      - name: workflows
