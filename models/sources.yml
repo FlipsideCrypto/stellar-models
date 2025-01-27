@@ -5,8 +5,15 @@ sources:
     database: streamline
     schema: "{{ 'stellar' if target.database == 'STELLAR' else 'stellar_dev' }}"
     tables:
-      - name: blocks
-      - name: block_txs
+      - name: accounts
+      - name: contract_data
+      - name: enriched_history_operations
+      - name: history_assets
+      - name: history_contract_events
+      - name: history_ledgers
+      - name: history_trades
+      - name: history_transactions
+      - name: liquidity_pools
   - name: crosschain
     database: "{{ 'crosschain' if target.database == 'STELLAR' else 'crosschain_dev' }}"
     schema: core
@@ -23,3 +30,16 @@ sources:
     schema: github_actions
     tables:
       - name: workflows
+  - name: bronze_bq
+    database: STELLAR_SAMPLE
+    schema: SAMPLE_DATA
+    tables:
+      - name: ACCOUNTS
+      - name: CONTRACT_DATA
+      - name: ENRICHED_HISTORY_OPERATIONS
+      - name: HISTORY_ASSETS
+      - name: HISTORY_CONTRACT_EVENTS
+      - name: HISTORY_LEDGERS
+      - name: HISTORY_TRADES
+      - name: HISTORY_TRANSACTIONS
+      - name: LIQUIDITY_POOLS

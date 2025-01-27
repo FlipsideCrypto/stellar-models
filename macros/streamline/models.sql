@@ -13,14 +13,14 @@ WITH meta AS (
     FROM
         TABLE(
             information_schema.external_table_file_registration_history(
-                start_time => DATEADD('day', -7, CURRENT_TIMESTAMP()),
+                start_time => DATEADD('day', -3, CURRENT_TIMESTAMP()),
                 table_name => '{{ source( "bronze_streamline", model) }}')
             ) A
 )
 SELECT
     {{ unique_key }},
     {{ other_cols }},
-    DATA,
+    value,
     _inserted_timestamp,
     s.{{ partition_name }},
     s.value AS VALUE
@@ -36,10 +36,7 @@ JOIN
     AND b.{{ partition_name }} = s.{{ partition_name }}
 WHERE
     b.{{ partition_name }} = s.{{ partition_name }}
-    AND (
-        data:error:code IS NULL
-
-    )
+    
 {% endmacro %}
 
 {% macro streamline_external_table_FR_query_v2(
@@ -64,7 +61,7 @@ WITH meta AS (
 SELECT
     {{ unique_key }},
     {{ other_cols }},
-    DATA,
+    value,
     _inserted_timestamp,
     s.{{ partition_name }},
     s.value AS VALUE
@@ -80,8 +77,5 @@ JOIN
     AND b.{{ partition_name }} = s.{{ partition_name }}
 WHERE
     b.{{ partition_name }} = s.{{ partition_name }}
-    AND (
-        data:error:code IS NULL
-         
-    )
+    
 {% endmacro %}
