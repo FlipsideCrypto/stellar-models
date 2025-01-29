@@ -1,0 +1,108 @@
+version: 2
+
+models:
+  - name: fact__liquidity_pools
+    description: Fact table containing liquidity pool data including pool details, asset pairs, and metrics.
+    
+    columns:
+      - name: partition_id
+        description: '{{ doc("partition_id") }}'
+
+      - name: liquidity_pool_id
+        description: '{{ doc("liquidity_pool_id") }}'
+        tests:
+          - not_null
+
+      - name: type
+        description: '{{ doc("type") }}'
+
+      - name: fee
+        description: '{{ doc("fee") }}'
+
+      - name: trustline_count
+        description: '{{ doc("trustline_count") }}'
+
+      - name: pool_share_count
+        description: '{{ doc("pool_share_count") }}'
+
+      - name: asset_a_type
+        description: '{{ doc("asset_type") }}'
+
+      - name: asset_a_code
+        description: '{{ doc("asset_code") }}'
+
+      - name: asset_a_issuer
+        description: '{{ doc("asset_issuer") }}'
+
+      - name: asset_a_id
+        description: '{{ doc("asset_id") }}'
+
+      - name: asset_a_amount
+        description: '{{ doc("asset_a_amount") }}'
+
+      - name: asset_b_type
+        description: '{{ doc("asset_type") }}'
+
+      - name: asset_b_code
+        description: '{{ doc("asset_code") }}'
+
+      - name: asset_b_issuer
+        description: '{{ doc("asset_issuer") }}'
+
+      - name: asset_b_id
+        description: '{{ doc("asset_id") }}'
+
+      - name: asset_b_amount
+        description: '{{ doc("asset_b_amount") }}'
+
+      - name: last_modified_ledger
+        description: '{{ doc("last_modified_ledger") }}'
+
+      - name: ledger_entry_change
+        description: '{{ doc("ledger_entry_change") }}'
+
+      - name: deleted
+        description: '{{ doc("deleted") }}'
+
+      - name: batch_id
+        description: '{{ doc("batch_id") }}'
+
+      - name: batch_run_date
+        description: '{{ doc("batch_run_date") }}'
+
+      - name: batch_insert_ts
+        description: '{{ doc("batch_insert_ts") }}'
+
+      - name: closed_at
+        description: '{{ doc("closed_at") }}'
+        tests:
+          - not_null
+
+      - name: ledger_sequence
+        description: '{{ doc("ledger_sequence") }}'
+
+      - name: _inserted_timestamp
+        description: '{{ doc("inserted_timestamp") }}'
+        tests:
+          - not_null
+
+      - name: liquidity_pools_id
+        description: '{{ doc("liquidity_pools_id") }}'
+        tests:
+          - unique
+          - not_null
+
+      - name: inserted_timestamp
+        description: '{{ doc("inserted_timestamp") }}'
+        tests:
+          - not_null
+
+      - name: modified_timestamp
+        description: '{{ doc("modified_timestamp") }}'
+        tests:
+          - not_null
+
+      - name: _invocation_id
+        description: '{{ doc("invocation_id") }}'
+        tests:
+          - not_null

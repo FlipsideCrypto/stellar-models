@@ -64,6 +64,10 @@ query-comment:
   comment: '{{ dbt_snowflake_query_tags.get_query_comment(node) }}'
   append: true # Snowflake removes prefixed comments.
 
+docs:
+  sources:
+    - docs/field_descriptions.md
+
 vars:
   "dbt_date:time_zone": GMT
   OBSERV_FULL_TEST: False
