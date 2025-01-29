@@ -21,19 +21,30 @@ FROM
     {% endset %}
     {% set max_inserted_timestamp = run_query(max_inserted_query) [0] [0] %}
 {% endif %}
+
+{% if is_incremental() %}
+{% set max_part_query %}
+SELECT
+    MAX(partition_id) AS partition_id
+FROM
+    {{ this }}
+
+    {% endset %}
+    {% set max_part = run_query(max_part_query) [0] [0] %}
+{% endif %}
 {% endif %}
 
 WITH pre_final AS (
     SELECT
         partition_id,
-        id,
-        asset_type,
-        asset_code,
-        asset_issuer,
-        batch_run_date,
-        batch_id,
-        batch_insert_ts,
-        asset_id,
+        id :: flot AS id,
+        asset_type :: STRING AS asset_type,
+        asset_code :: STRING AS asset_code,
+        asset_issuer :: STRING AS asset_issuer,
+        batch_run_date :: datetime AS batch_run_date,
+        batch_id :: STRING AS batch_id,
+        batch_insert_ts :: datetime AS batch_insert_ts,
+        asset_id :: INT AS asset_id,
         _inserted_timestamp
     FROM
 
@@ -45,7 +56,8 @@ WITH pre_final AS (
 
 {% if is_incremental() %}
 WHERE
-    _inserted_timestamp >= '{{ max_inserted_timestamp }}'
+    partition_id >= '{{ max_part }}'
+    AND _inserted_timestamp > '{{ max_inserted_timestamp }}'
 {% endif %}
 
 qualify ROW_NUMBER() over (

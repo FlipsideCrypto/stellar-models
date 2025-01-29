@@ -60,7 +60,8 @@ WITH pre_final AS (
 
 {% if is_incremental() %}
 WHERE
-    _inserted_timestamp >= '{{ max_inserted_timestamp }}'
+    partition_id >= '{{ max_part }}'
+    AND _inserted_timestamp > '{{ max_inserted_timestamp }}'
 {% endif %}
 
 qualify ROW_NUMBER() over (
@@ -72,29 +73,29 @@ qualify ROW_NUMBER() over (
 )
 SELECT
     partition_id,
-    liquidity_pool_id,
-    TYPE,
-    fee,
-    trustline_count,
-    pool_share_count,
-    asset_a_type,
-    asset_a_code,
-    asset_a_issuer,
-    asset_a_id,
-    asset_a_amount,
-    asset_b_type,
-    asset_b_code,
-    asset_b_issuer,
-    asset_b_id,
-    asset_b_amount,
-    last_modified_ledger,
-    ledger_entry_change,
-    deleted,
-    batch_id,
-    batch_run_date,
-    batch_insert_ts,
-    closed_at,
-    ledger_sequence,
+    liquidity_pool_id :: STRING AS liquidity_pool_id,
+    TYPE :: STRING AS TYPE,
+    fee :: INTEGER AS fee,
+    trustline_count :: INTEGER AS trustline_count,
+    pool_share_count :: FLOAT AS pool_share_count,
+    asset_a_type :: STRING AS asset_a_type,
+    asset_a_code :: STRING AS asset_a_code,
+    asset_a_issuer :: STRING AS asset_a_issuer,
+    asset_a_id :: INTEGER AS asset_a_id,
+    asset_a_amount :: FLOAT AS asset_a_amount,
+    asset_b_type :: STRING AS asset_b_type,
+    asset_b_code :: STRING AS asset_b_code,
+    asset_b_issuer :: STRING AS asset_b_issuer,
+    asset_b_id :: INTEGER AS asset_b_id,
+    asset_b_amount :: FLOAT AS asset_b_amount,
+    last_modified_ledger :: INTEGER AS last_modified_ledger,
+    ledger_entry_change :: INTEGER AS ledger_entry_change,
+    deleted :: BOOLEAN AS deleted,
+    batch_id :: STRING AS batch_id,
+    batch_run_date :: TIMESTAMP AS batch_run_date,
+    batch_insert_ts :: TIMESTAMP AS batch_insert_ts,
+    closed_at :: TIMESTAMP AS closed_at,
+    ledger_sequence :: INTEGER AS ledger_sequence,
     _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
         ['liquidity_pool_id','closed_at']
