@@ -1,3 +1,4 @@
+-- depends_on: {{ ref('silver__ledgers') }}
 {{ config(
     materialized = 'incremental',
     unique_key = ['fact_ledgers_id'],

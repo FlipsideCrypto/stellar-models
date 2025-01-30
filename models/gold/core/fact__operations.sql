@@ -9,7 +9,6 @@
 ) }}
 
 SELECT 
-    partition_id,
     op_id,
     account,
     amount,
@@ -154,7 +153,7 @@ SELECT
     op_application_order,
     txn_application_order,
     _inserted_timestamp,
-    {{ dbt_utils.generate_surrogate_key(['op_id']) }} AS operations_id,
+    {{ dbt_utils.generate_surrogate_key(['op_id']) }} AS fact_operations_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
     '{{ invocation_id }}' AS _invocation_id

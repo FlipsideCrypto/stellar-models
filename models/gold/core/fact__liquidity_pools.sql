@@ -9,7 +9,6 @@
 ) }}
 
 SELECT
-    partition_id,
     liquidity_pool_id,
     type,
     fee,
@@ -36,7 +35,7 @@ SELECT
     _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
         ['liquidity_pool_id', 'closed_at']
-    ) }} AS liquidity_pools_id,
+    ) }} AS fact_liquidity_pools_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
     '{{ invocation_id }}' AS _invocation_id

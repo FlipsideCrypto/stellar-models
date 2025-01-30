@@ -1,3 +1,4 @@
+-- depends_on: {{ ref('silver__accounts') }}
 {{ config(
     materialized = 'incremental',
     unique_key = ["account_id","closed_at"],
@@ -31,7 +32,7 @@ SELECT
     sequence_time,
     closed_at,
     ledger_sequence,
-    {{ dbt_utils.generate_surrogate_key(['account_id', 'closed_at']) }} AS core_accounts_id,
+    {{ dbt_utils.generate_surrogate_key(['account_id', 'closed_at']) }} AS fact_accounts_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
     '{{ invocation_id }}' AS _invocation_id

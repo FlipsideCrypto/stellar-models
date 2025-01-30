@@ -5,104 +5,102 @@ models:
     description: Fact table containing liquidity pool data including pool details, asset pairs, and metrics.
     
     columns:
-      - name: partition_id
-        description: '{{ doc("partition_id") }}'
 
-      - name: liquidity_pool_id
+      - name: LIQUIDITY_POOL_ID
         description: '{{ doc("liquidity_pool_id") }}'
         tests:
           - not_null
 
-      - name: type
+      - name: TYPE
         description: '{{ doc("type") }}'
 
-      - name: fee
+      - name: FEE
         description: '{{ doc("fee") }}'
 
-      - name: trustline_count
+      - name: TRUSTLINE_COUNT
         description: '{{ doc("trustline_count") }}'
 
-      - name: pool_share_count
+      - name: POOL_SHARE_COUNT
         description: '{{ doc("pool_share_count") }}'
 
-      - name: asset_a_type
+      - name: ASSET_A_TYPE
         description: '{{ doc("asset_type") }}'
 
-      - name: asset_a_code
+      - name: ASSET_A_CODE
         description: '{{ doc("asset_code") }}'
 
-      - name: asset_a_issuer
+      - name: ASSET_A_ISSUER
         description: '{{ doc("asset_issuer") }}'
 
-      - name: asset_a_id
+      - name: ASSET_A_ID
         description: '{{ doc("asset_id") }}'
 
-      - name: asset_a_amount
+      - name: ASSET_A_AMOUNT
         description: '{{ doc("asset_a_amount") }}'
 
-      - name: asset_b_type
+      - name: ASSET_B_TYPE
         description: '{{ doc("asset_type") }}'
 
-      - name: asset_b_code
+      - name: ASSET_B_CODE
         description: '{{ doc("asset_code") }}'
 
-      - name: asset_b_issuer
+      - name: ASSET_B_ISSUER
         description: '{{ doc("asset_issuer") }}'
 
-      - name: asset_b_id
+      - name: ASSET_B_ID
         description: '{{ doc("asset_id") }}'
 
-      - name: asset_b_amount
+      - name: ASSET_B_AMOUNT
         description: '{{ doc("asset_b_amount") }}'
 
-      - name: last_modified_ledger
+      - name: LAST_MODIFIED_LEDGER
         description: '{{ doc("last_modified_ledger") }}'
 
-      - name: ledger_entry_change
+      - name: LEDGER_ENTRY_CHANGE
         description: '{{ doc("ledger_entry_change") }}'
 
-      - name: deleted
+      - name: DELETED
         description: '{{ doc("deleted") }}'
 
-      - name: batch_id
+      - name: BATCH_ID
         description: '{{ doc("batch_id") }}'
 
-      - name: batch_run_date
+      - name: BATCH_RUN_DATE
         description: '{{ doc("batch_run_date") }}'
 
-      - name: batch_insert_ts
+      - name: BATCH_INSERT_TS
         description: '{{ doc("batch_insert_ts") }}'
 
-      - name: closed_at
+      - name: CLOSED_AT
         description: '{{ doc("closed_at") }}'
         tests:
           - not_null
 
-      - name: ledger_sequence
+      - name: LEDGER_SEQUENCE
         description: '{{ doc("ledger_sequence") }}'
 
-      - name: _inserted_timestamp
+      - name: _INSERTED_TIMESTAMP
         description: '{{ doc("inserted_timestamp") }}'
         tests:
           - not_null
 
-      - name: liquidity_pools_id
+      - name: LIQUIDITY_POOLS_ID
         description: '{{ doc("liquidity_pools_id") }}'
         tests:
           - unique
           - not_null
 
-      - name: inserted_timestamp
+      - name: INSERTED_TIMESTAMP
         description: '{{ doc("inserted_timestamp") }}'
         tests:
           - not_null
 
-      - name: modified_timestamp
+      - name: MODIFIED_TIMESTAMP
         description: '{{ doc("modified_timestamp") }}'
         tests:
           - not_null
 
-      - name: _invocation_id
+      - name: _INVOCATION_ID
         description: '{{ doc("invocation_id") }}'
         tests:
           - not_null

@@ -1,3 +1,4 @@
+-- depends_on: {{ ref('silver__assets') }}
 {{ config(
     materialized = 'incremental',
     unique_key = ['dim_assets_id'],
@@ -7,10 +8,11 @@
 ) }}
 
 SELECT
+    id,
     asset_type,
     asset_code,
     asset_issuer,
-    asset_id as asset_id_hash,
+    asset_id,
     {{ dbt_utils.generate_surrogate_key(
         ['asset_id']
     ) }} AS dim_assets_id,
