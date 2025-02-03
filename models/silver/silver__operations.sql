@@ -11,21 +11,18 @@
 {% if execute %}
 
 {% if is_incremental() %}
-{% set max_inserted_query %}
+{% set max_is_query %}
 
 SELECT
-    MAX(batch_insert_ts) AS batch_insert_ts
+    MAX(_inserted_timestamp) AS _inserted_timestamp
 FROM
     {{ this }}
 
     {% endset %}
-    {% set max_inserted_timestamp = run_query(max_inserted_query) [0] [0] %}
-{% endif %}
-
-{% if is_incremental() %}
-{% set max_part_query %}
+    {% set max_is = run_query(max_is_query) [0] [0] %}
+    {% set max_part_query %}
 SELECT
-    MAX(partition_id) AS partition_id
+    MAX(partition_gte_id) AS partition__gte_id
 FROM
     {{ this }}
 
@@ -36,7 +33,8 @@ FROM
 
 WITH pre_final AS (
     SELECT
-        partition_id AS partition_id,
+        partition_id,
+        partition_gte_id,
         id :: INTEGER AS id,
         VALUE :source_account :: STRING AS source_account,
         VALUE :source_account_muxed :: STRING AS op_source_account_muxed,
@@ -170,31 +168,27 @@ WITH pre_final AS (
         ) AS closed_at,
         VALUE :batch_id :: STRING AS batch_id,
         VALUE :batch_run_date :: TIMESTAMP AS batch_run_date,
-        VALUE :batch_insert_ts :: INT AS batch_insert_ts,
-        NULL AS _inserted_timestamp
+        VALUE :batch_insert_ts :: TIMESTAMP AS batch_insert_ts,
+        _inserted_timestamp
     FROM
-        {{ source(
-            'bronze_streamline',
-            'history_operations'
-        ) }}
-        {# {% if is_incremental() %}
-        {{ ref('bronze__operations') }}
-    {% else %}
-        {{ ref('bronze__operations_FR') }}
-    {% endif %}
 
-    #}
+{% if is_incremental() %}
+{{ ref('bronze__operations') }}
+{% else %}
+    {{ ref('bronze__operations_FR') }}
+{% endif %}
 
 {% if is_incremental() %}
 WHERE
-    partition_id >= '{{ max_part }}'
-    AND _inserted_timestamp > '{{ max_batch }}'
+    partition_gte_id >= '{{ max_part }}'
+    AND _inserted_timestamp > '{{ max_is }}'
 {% endif %}
 
 qualify ROW_NUMBER() over (
     PARTITION BY id
     ORDER BY
-        batch_insert_ts DESC
+        batch_insert_ts DESC,
+        _inserted_timestamp DESC
 ) = 1
 )
 SELECT

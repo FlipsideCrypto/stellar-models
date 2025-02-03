@@ -5,14 +5,13 @@
     incremental_predicates = ["dynamic_range_predicate", "partition_id::date"],
     merge_exclude_columns = ["inserted_timestamp"],
     cluster_by = ['closed_at::DATE','partition_id','modified_timestamp::DATE'],
-    full_refresh = false,
     tags = ['scheduled_core'],
 ) }}
 
 {% if execute %}
 
 {% if is_incremental() %}
-{% set max_inserted_query %}
+{% set max_is_query %}
 
 SELECT
     MAX(_inserted_timestamp) AS _inserted_timestamp
@@ -20,13 +19,22 @@ FROM
     {{ this }}
 
     {% endset %}
-    {% set max_inserted_timestamp = run_query(max_inserted_query) [0] [0] %}
+    {% set max_is = run_query(max_is_query) [0] [0] %}
+    {% set max_part_query %}
+SELECT
+    MAX(partition_gte_id) AS partition__gte_id
+FROM
+    {{ this }}
+
+    {% endset %}
+    {% set max_part = run_query(max_part_query) [0] [0] %}
 {% endif %}
 {% endif %}
 
 WITH pre_final AS (
     SELECT
         partition_id,
+        partition_gte_id,
         SEQUENCE :: INTEGER AS SEQUENCE,
         ledger_hash :: STRING AS ledger_hash,
         previous_ledger_hash :: STRING AS previous_ledger_hash,
@@ -40,7 +48,7 @@ WITH pre_final AS (
         base_reserve :: INTEGER AS base_reserve,
         max_tx_set_size :: INTEGER AS max_tx_set_size,
         protocol_version :: INTEGER AS protocol_version,
-        ledger_header :: BINARY AS ledger_header,
+        {# ledger_header :: STRING AS ledger_header, #}
         successful_transaction_count :: INTEGER AS successful_transaction_count,
         failed_transaction_count :: INTEGER AS failed_transaction_count,
         tx_set_operation_count :: INTEGER AS tx_set_operation_count,
@@ -62,18 +70,20 @@ WITH pre_final AS (
 
 {% if is_incremental() %}
 WHERE
-    partition_id >= '{{ max_part }}'
-    AND _inserted_timestamp > '{{ max_inserted_timestamp }}'
+    partition_gte_id >= '{{ max_part }}'
+    AND _inserted_timestamp > '{{ max_is }}'
 {% endif %}
 
 qualify ROW_NUMBER() over (
     PARTITION BY SEQUENCE
     ORDER BY
+        batch_insert_ts DESC,
         _inserted_timestamp DESC
 ) = 1
 )
 SELECT
     partition_id,
+    partition_gte_id,
     SEQUENCE,
     ledger_hash,
     previous_ledger_hash,
@@ -87,7 +97,7 @@ SELECT
     base_reserve,
     max_tx_set_size,
     protocol_version,
-    ledger_header,
+    {# ledger_header, #}
     successful_transaction_count,
     failed_transaction_count,
     tx_set_operation_count,
@@ -98,12 +108,12 @@ SELECT
     node_id,
     signature,
     total_byte_size_of_bucket_list,
-    _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
         ['sequence']
     ) }} AS ledgers_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
-    '{{ invocation_id }}' AS _invocation_id
+    '{{ invocation_id }}' AS _invocation_id,
+    _inserted_timestamp
 FROM
     pre_final

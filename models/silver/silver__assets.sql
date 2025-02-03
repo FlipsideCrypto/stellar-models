@@ -11,15 +11,15 @@
 {% if execute %}
 
 {% if is_incremental() %}
-{% set max_inserted_query %}
+{% set max_bat_query %}
 
 SELECT
-    MAX(_inserted_timestamp) AS _inserted_timestamp
+    MAX(batch_insert_ts) AS batch_insert_ts
 FROM
     {{ this }}
 
     {% endset %}
-    {% set max_inserted_timestamp = run_query(max_inserted_query) [0] [0] %}
+    {% set max_batch = run_query(max_bat_query) [0] [0] %}
 {% endif %}
 
 {% if is_incremental() %}
@@ -37,34 +37,37 @@ FROM
 WITH pre_final AS (
     SELECT
         partition_id,
-        id :: flot AS id,
+        id :: FLOAT AS id,
         asset_type :: STRING AS asset_type,
         asset_code :: STRING AS asset_code,
         asset_issuer :: STRING AS asset_issuer,
         batch_run_date :: datetime AS batch_run_date,
         batch_id :: STRING AS batch_id,
         batch_insert_ts :: datetime AS batch_insert_ts,
-        asset_id :: INT AS asset_id,
-        _inserted_timestamp
+        asset_id :: INT AS asset_id
     FROM
+        {# {% if is_incremental() %}
+        {{ ref('bronze__assets') }}
+    {% else %}
+        {{ ref('bronze__assets_FR') }}
+    {% endif %}
 
-{% if is_incremental() %}
-{{ ref('bronze__assets') }}
-{% else %}
-    {{ ref('bronze__assets_FR') }}
-{% endif %}
+    #}
+    {{ source(
+        'bronze_streamline',
+        'history_assets'
+    ) }}
 
 {% if is_incremental() %}
 WHERE
     partition_id >= '{{ max_part }}'
-    AND _inserted_timestamp > '{{ max_inserted_timestamp }}'
+    AND batch_insert_ts > '{{ max_batch }}'
 {% endif %}
 
 qualify ROW_NUMBER() over (
     PARTITION BY asset_id
     ORDER BY
-        batch_insert_ts DESC,
-        _inserted_timestamp DESC
+        batch_insert_ts DESC
 ) = 1
 )
 SELECT
@@ -77,7 +80,6 @@ SELECT
     batch_id,
     batch_insert_ts,
     asset_id,
-    _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
         ['asset_id']
     ) }} AS assets_id,
