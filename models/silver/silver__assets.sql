@@ -11,67 +11,64 @@
 {% if execute %}
 
 {% if is_incremental() %}
-{% set max_bat_query %}
+{% set max_is_query %}
 
 SELECT
-    MAX(batch_insert_ts) AS batch_insert_ts
+    MAX(_inserted_timestamp) AS _inserted_timestamp,
+    MAX(partition_gte_id) AS partition__gte_id
 FROM
     {{ this }}
 
     {% endset %}
-    {% set max_batch = run_query(max_bat_query) [0] [0] %}
-{% endif %}
-
-{% if is_incremental() %}
-{% set max_part_query %}
-SELECT
-    MAX(partition_id) AS partition_id
-FROM
-    {{ this }}
-
-    {% endset %}
-    {% set max_part = run_query(max_part_query) [0] [0] %}
+    {% set result = run_query(max_is_query) %}
+    {% set max_is = result [0] [0] %}
+    {% set max_part = result [0] [1] %}
 {% endif %}
 {% endif %}
 
 WITH pre_final AS (
     SELECT
         partition_id,
-        id :: FLOAT AS id,
-        asset_type :: STRING AS asset_type,
-        asset_code :: STRING AS asset_code,
-        asset_issuer :: STRING AS asset_issuer,
-        batch_run_date :: datetime AS batch_run_date,
-        batch_id :: STRING AS batch_id,
-        batch_insert_ts :: datetime AS batch_insert_ts,
-        asset_id :: INT AS asset_id
+        partition_gte_id,
+        VALUE :id :: FLOAT AS id,
+        VALUE :asset_type :: STRING AS asset_type,
+        VALUE :asset_code :: STRING AS asset_code,
+        VALUE :asset_issuer :: STRING AS asset_issuer,
+        TO_TIMESTAMP(
+            VALUE :batch_run_date :: INT,
+            6
+        ) AS batch_run_date,
+        VALUE: batch_id :: STRING AS batch_id,
+        TO_TIMESTAMP(
+            VALUE :batch_insert_ts :: INT,
+            6
+        ) AS batch_insert_ts,
+        VALUE :asset_id :: INT AS asset_id,
+        _inserted_timestamp
     FROM
-        {# {% if is_incremental() %}
-        {{ ref('bronze__assets') }}
-    {% else %}
-        {{ ref('bronze__assets_FR') }}
-    {% endif %}
 
-    #}
-    {{ source(
-        'bronze_streamline',
-        'history_assets'
-    ) }}
+{% if is_incremental() %}
+{{ ref('bronze__assets') }}
+{% else %}
+    {{ ref('bronze__assets_FR') }}
+{% endif %}
 
 {% if is_incremental() %}
 WHERE
-    partition_id >= '{{ max_part }}'
-    AND batch_insert_ts > '{{ max_batch }}'
+    partition_gte_id >= '{{ max_part }}'
+    AND _inserted_timestamp > '{{ max_is }}'
 {% endif %}
 
 qualify ROW_NUMBER() over (
     PARTITION BY asset_id
     ORDER BY
-        batch_insert_ts DESC
+        batch_insert_ts DESC,
+        _inserted_timestamp DESC
 ) = 1
 )
 SELECT
     partition_id,
+    partition_gte_id,
     id,
     asset_type,
     asset_code,
@@ -80,6 +77,7 @@ SELECT
     batch_id,
     batch_insert_ts,
     asset_id,
+    _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
         ['asset_id']
     ) }} AS assets_id,

@@ -14,20 +14,15 @@
 {% set max_is_query %}
 
 SELECT
-    MAX(_inserted_timestamp) AS _inserted_timestamp
-FROM
-    {{ this }}
-
-    {% endset %}
-    {% set max_is = run_query(max_is_query) [0] [0] %}
-    {% set max_part_query %}
-SELECT
+    MAX(_inserted_timestamp) AS _inserted_timestamp,
     MAX(partition_gte_id) AS partition__gte_id
 FROM
     {{ this }}
 
     {% endset %}
-    {% set max_part = run_query(max_part_query) [0] [0] %}
+    {% set result = run_query(max_is_query) %}
+    {% set max_is = result [0] [0] %}
+    {% set max_part = result [0] [1] %}
 {% endif %}
 {% endif %}
 
