@@ -3,8 +3,8 @@
 ) }}
 {{ streamline_external_table_FR_query_v2(
     model = "history_trades",
-    partition_function = " TO_DATE( SPLIT_PART(SPLIT_PART(file_name, '/', 3), '=', 2)|| '01', 'YYYYMMDD')",
-    partition_name = "partition_id",
+    partition_function = "TRY_TO_DATE(left(split_part(split_part(file_name, '=', -1), '/', -1),8), 'YYYYMMDD')",
+    partition_name = "partition_gte_id",
     unique_key = "HISTORY_OPERATION_ID",
-    other_cols = '"order", LEDGER_CLOSED_AT, SELLING_ACCOUNT_ADDRESS, SELLING_ASSET_CODE, SELLING_ASSET_ISSUER, SELLING_ASSET_TYPE, SELLING_ASSET_ID, SELLING_AMOUNT, BUYING_ACCOUNT_ADDRESS, BUYING_ASSET_CODE, BUYING_ASSET_ISSUER, BUYING_ASSET_TYPE, BUYING_ASSET_ID, BUYING_AMOUNT, PRICE_N, PRICE_D, SELLING_OFFER_ID, BUYING_OFFER_ID, BATCH_ID, BATCH_RUN_DATE, BATCH_INSERT_TS, SELLING_LIQUIDITY_POOL_ID, LIQUIDITY_POOL_FEE, TRADE_TYPE, ROUNDING_SLIPPAGE, SELLER_IS_EXACT'
+    other_cols = 'partition_id'
 ) }}

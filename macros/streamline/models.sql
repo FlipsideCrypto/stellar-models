@@ -22,8 +22,7 @@ SELECT
     {{ other_cols }},
     value,
     _inserted_timestamp,
-    s.{{ partition_name }},
-    s.value AS VALUE
+    s.{{ partition_name }} 
 FROM
     {{ source(
         "bronze_streamline",
@@ -63,8 +62,7 @@ SELECT
     {{ other_cols }},
     value,
     _inserted_timestamp,
-    s.{{ partition_name }},
-    s.value AS VALUE
+    s.{{ partition_name }}
 FROM
     {{ source(
         "bronze_streamline",
