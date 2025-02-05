@@ -2,14 +2,14 @@
 {{ config(
     materialized = 'incremental',
     unique_key = ["fact_transactions_id"],
-    incremental_predicates = ["dynamic_range_predicate", "partition_id::date"],
+    incremental_predicates = ["dynamic_range_predicate"],
     merge_exclude_columns = ["inserted_timestamp"],
-    cluster_by = ['closed_at::DATE','partition_id','modified_timestamp::DATE'],
+    cluster_by = ['closed_at::DATE'],
     tags = ['core']
 ) }}
 
 SELECT
-    id as transaction_id,
+    id,
     transaction_hash,
     ledger_sequence,
     account,

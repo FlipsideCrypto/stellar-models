@@ -2,9 +2,9 @@
 {{ config(
     materialized = 'incremental',
     unique_key = ["account_id","closed_at"],
-    incremental_predicates = ["dynamic_range_predicate", "partition_id::date"],
+    incremental_predicates = ["dynamic_range_predicate", "closed_at::date"],
     merge_exclude_columns = ["inserted_timestamp"],
-    cluster_by = ['closed_at::DATE','partition_id','modified_timestamp::DATE'],
+    cluster_by = ['closed_at::DATE'],
     tags = ['core']
 ) }}
 
@@ -31,6 +31,7 @@ SELECT
     sequence_ledger,
     sequence_time,
     closed_at,
+    closed_at as block_timestamp,
     ledger_sequence,
     {{ dbt_utils.generate_surrogate_key(['account_id', 'closed_at']) }} AS fact_accounts_id,
     SYSDATE() AS inserted_timestamp,

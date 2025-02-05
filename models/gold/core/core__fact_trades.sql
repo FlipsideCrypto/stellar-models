@@ -2,14 +2,13 @@
 {{ config(
     materialized = 'incremental',
     unique_key = ['fact_trades_id'],
-    incremental_predicates = ["dynamic_range_predicate", "partition_id::date"],
+    incremental_predicates = ["dynamic_range_predicate"],
     merge_exclude_columns = ["inserted_timestamp"],
-    cluster_by = ['ledger_closed_at::DATE','partition_id','modified_timestamp::DATE'],
+    cluster_by = ['ledger_closed_at::DATE'],
     tags = ['core'],
 ) }}
 
 SELECT
-    trades_id,
     history_operation_id,
     "order",
     ledger_closed_at,
@@ -29,6 +28,9 @@ SELECT
     price_d,
     selling_offer_id,
     buying_offer_id,
+    batch_id,
+    batch_run_date,
+    batch_insert_ts,
     selling_liquidity_pool_id,
     liquidity_pool_fee,
     trade_type,
