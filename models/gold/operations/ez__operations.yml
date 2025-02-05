@@ -1,0 +1,115 @@
+version: 2
+
+models:
+  - name: ez__operations
+    description: A comprehensive view combining operations with their associated transaction and ledger data.
+    config:
+      tags: ["core"]
+    
+    columns:
+      - name: fact_operations_id
+        description: '{{ doc("pk") }}'
+        tests:
+          - unique
+          - not_null
+
+      - name: op_id
+        description: '{{ doc("op_id") }}'
+        tests:
+          - not_null
+
+      - name: transaction_id
+        description: '{{ doc("transaction_id") }}'
+
+      - name: type
+        description: '{{ doc("type") }}'
+
+      - name: account
+        description: '{{ doc("account") }}'
+
+      - name: amount
+        description: '{{ doc("amount") }}'
+
+      - name: asset_code
+        description: '{{ doc("asset_code") }}'
+
+      - name: asset_issuer
+        description: '{{ doc("asset_issuer") }}'
+
+      - name: asset_type
+        description: '{{ doc("asset_type") }}'
+
+      - name: transaction_hash
+        description: '{{ doc("transaction_hash") }}'
+
+      - name: ledger_sequence
+        description: '{{ doc("ledger_sequence") }}'
+
+      - name: closed_at
+        description: '{{ doc("closed_at") }}'
+
+      - name: successful
+        description: '{{ doc("successful") }}'
+
+      - name: operation_result_code
+        description: '{{ doc("operation_result_code") }}'
+
+      - name: operation_trace_code
+        description: '{{ doc("operation_trace_code") }}'
+
+      - name: details_json
+        description: '{{ doc("details_json") }}'
+
+      - name: asset_balance_changes
+        description: '{{ doc("asset_balance_changes") }}'
+
+      - name: parameters
+        description: '{{ doc("parameters") }}'
+
+      - name: parameters_decoded
+        description: '{{ doc("parameters_decoded") }}'
+
+      - name: function
+        description: '{{ doc("function") }}'
+
+      - name: contract_id
+        description: '{{ doc("contract_id") }}'
+
+      - name: contract_code_hash
+        description: '{{ doc("contract_code_hash") }}'
+
+      - name: resource_fee
+        description: '{{ doc("resource_fee") }}'
+
+      - name: soroban_resources_instructions
+        description: '{{ doc("soroban_resources_instructions") }}'
+
+      - name: soroban_resources_read_bytes
+        description: '{{ doc("soroban_resources_read_bytes") }}'
+
+      - name: soroban_resources_write_bytes
+        description: '{{ doc("soroban_resources_write_bytes") }}'
+
+      - name: non_refundable_resource_fee_charged
+        description: '{{ doc("non_refundable_resource_fee_charged") }}'
+
+      - name: refundable_resource_fee_charged
+        description: '{{ doc("refundable_resource_fee_charged") }}'
+
+      - name: rent_fee_charged
+        description: '{{ doc("rent_fee_charged") }}'
+
+      - name: tx_signers
+        description: '{{ doc("tx_signers") }}'
+
+      - name: refundable_fee
+        description: '{{ doc("refundable_fee") }}'
+
+      - name: inserted_timestamp
+        description: '{{ doc("inserted_timestamp") }}'
+
+      - name: modified_timestamp
+        description: '{{ doc("modified_timestamp") }}'
+
+      - name: _invocation_id
+        description: '{{ doc("invocation_id") }}'
