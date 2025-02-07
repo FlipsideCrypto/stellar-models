@@ -2,10 +2,11 @@
 {{ config(
     materialized = 'incremental',
     unique_key = ["account_id","closed_at"],
-    incremental_predicates = ["dynamic_range_predicate", "closed_at::date"],
+    incremental_predicates = ["dynamic_range_predicate", "block_timestamp::date"],
     merge_exclude_columns = ["inserted_timestamp"],
-    cluster_by = ['closed_at::DATE'],
-    tags = ['core']
+    cluster_by = ['block_timestamp::DATE','closed_at::DATE'],
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(account_id);",
+    tags = ['scheduled_core']
 ) }}
 
 SELECT
@@ -20,7 +21,7 @@ SELECT
     home_domain,
     master_weight,
     threshold_low,
-    threshold_medium, 
+    threshold_medium,
     threshold_high,
     last_modified_ledger,
     ledger_entry_change,
@@ -31,13 +32,13 @@ SELECT
     sequence_ledger,
     sequence_time,
     closed_at,
-    closed_at as block_timestamp,
+    closed_at AS block_timestamp,
     ledger_sequence,
     {{ dbt_utils.generate_surrogate_key(['account_id', 'closed_at']) }} AS fact_accounts_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
     '{{ invocation_id }}' AS _invocation_id
-FROM 
+FROM
     {{ ref('silver__accounts') }}
 
 {% if is_incremental() %}

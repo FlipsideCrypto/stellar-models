@@ -1,21 +1,21 @@
 -- depends_on: {{ ref('silver__ledgers') }}
 {{ config(
     materialized = 'incremental',
-    unique_key = ['fact_ledgers_id'],
-    incremental_predicates = ['DBT_INTERNAL_DEST.closed_at::DATE >= (select min(closed_at::DATE) from ' ~ generate_tmp_view_name(this) ~ ')'],
-    cluster_by = ['closed_at::DATE'],
+    unique_key = ['sequence'],
+    incremental_predicates = ["dynamic_range_predicate", "block_timestamp::date"],
+    cluster_by = ['block_timestamp::DATE','closed_at::DATE'],
     merge_exclude_columns = ['inserted_timestamp'],
-    tags = ['core']
+    tags = ['scheduled_core']
 ) }}
 
 SELECT
-    sequence,
+    SEQUENCE,
     ledger_hash,
     previous_ledger_hash,
     transaction_count,
     operation_count,
     closed_at,
-    closed_at as block_timestamp,
+    closed_at AS block_timestamp,
     id,
     total_coins,
     fee_pool,

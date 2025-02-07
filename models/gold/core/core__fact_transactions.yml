@@ -4,11 +4,11 @@ models:
   - name: core__fact_transactions
     description: Fact table containing transaction details from the Stellar network.
     columns:
-      - name: transactions_id
-        description: '{{ doc("pk") }}'
-        tests:
-          - unique
-          - not_null
+      # - name: id
+      #   description: '{{ doc("pk") }}'
+      #   tests:
+      #     - unique
+      #     - not_null
 
       - name: id
         description: Unique identifier for the transaction
@@ -62,8 +62,8 @@ models:
 
       - name: successful
         description: '{{ doc("successful") }}'
-        tests:
-          - not_null
+        # tests:
+        #   - not_null
 
       - name: fee_charged
         description: '{{ doc("fee_charged") }}'

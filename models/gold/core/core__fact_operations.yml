@@ -4,7 +4,7 @@ models:
   - name: core__fact_operations
     description: A comprehensive view of all operations executed on the Stellar network, including transaction details, operation types, and their outcomes.
     columns:
-      - name: OP_ID
+      - name: ID
         description: '{{ doc("op_id") }}'
         tests:
           - unique
@@ -46,7 +46,7 @@ models:
       - name: BUYING_ASSET_ID
         description: '{{ doc("buying_asset_id") }}'
 
-      - name: FROM
+      - name: FROM_ACCOUNT
         description: '{{ doc("from") }}'
 
       - name: FUNDER
@@ -61,10 +61,10 @@ models:
       - name: INFLATION_DEST
         description: '{{ doc("inflation_destination") }}'
 
-      - name: INTO
+      - name: INTO_ACCOUNT
         description: '{{ doc("into") }}'
 
-      - name: LIMIT
+      - name: LIMIT_AMOUNT
         description: '{{ doc("limit") }}'
 
       - name: LOW_THRESHOLD
@@ -139,7 +139,7 @@ models:
       - name: STARTING_BALANCE
         description: '{{ doc("starting_balance") }}'
 
-      - name: TO
+      - name: TO_ACCOUNT
         description: '{{ doc("to") }}'
 
       - name: TRUSTEE

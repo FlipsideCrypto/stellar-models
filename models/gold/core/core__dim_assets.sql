@@ -1,18 +1,19 @@
 -- depends_on: {{ ref('silver__assets') }}
 {{ config(
     materialized = 'incremental',
-    unique_key = ['dim_assets_id'],
+    unique_key = ['asset_id'],
     incremental_strategy = 'merge',
     merge_exclude_columns = ['inserted_timestamp'],
-    tags = ['core']
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(asset_code,asset_issuer,asset_id);",
+    tags = ['scheduled_core']
 ) }}
 
 SELECT
-    id,
+    asset_id,
     asset_type,
     asset_code,
     asset_issuer,
-    asset_id,
+    id,
     {{ dbt_utils.generate_surrogate_key(
         ['asset_id']
     ) }} AS dim_assets_id,

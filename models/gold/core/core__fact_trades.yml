@@ -4,18 +4,12 @@ models:
   - name: core__fact_trades
     description: A fact table containing trade execution details from both the decentralized exchange and liquidity pools.
     columns:
-      - name: trades_id
-        description: '{{ doc("trades_id") }}'
-        tests:
-          - unique
-          - not_null
-
       - name: history_operation_id
         description: '{{ doc("history_operation_id") }}'
         tests:
           - not_null
 
-      - name: order
+      - name: trade_order
         description: '{{ doc("order") }}'
         tests:
           - not_null

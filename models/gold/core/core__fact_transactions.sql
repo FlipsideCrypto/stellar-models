@@ -1,17 +1,20 @@
 -- depends_on: {{ ref('silver__transactions') }}
 {{ config(
     materialized = 'incremental',
-    unique_key = ["fact_transactions_id"],
-    incremental_predicates = ["dynamic_range_predicate"],
+    unique_key = ["id"],
+    incremental_predicates = ["dynamic_range_predicate", "block_timestamp::date"],
     merge_exclude_columns = ["inserted_timestamp"],
-    cluster_by = ['closed_at::DATE'],
-    tags = ['core']
+    cluster_by = ['block_timestamp::DATE','closed_at::DATE'],
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(id,transaction_hash,account);",
+    tags = ['scheduled_core']
 ) }}
 
 SELECT
     id,
     transaction_hash,
     ledger_sequence,
+    closed_at,
+    closed_at AS block_timestamp,
     account,
     account_sequence,
     max_fee,
@@ -20,7 +23,7 @@ SELECT
     memo_type,
     memo,
     time_bounds,
-    successful,
+    SUCCESSFUL,
     fee_charged,
     inner_transaction_hash,
     fee_account,
@@ -43,7 +46,6 @@ SELECT
     soroban_resources_instructions,
     soroban_resources_read_bytes,
     soroban_resources_write_bytes,
-    closed_at,
     transaction_result_code,
     inclusion_fee_bid,
     inclusion_fee_charged,
