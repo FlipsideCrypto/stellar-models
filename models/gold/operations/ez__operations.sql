@@ -6,7 +6,7 @@
     materialized='incremental',
     unique_key=['op_id'],
     cluster_by=['block_timestamp::DATE', 'closed_at::DATE', 'type_string'],
-    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(source_account,asset,asset_code,asset_issuer,buying_asset_code,buying_asset_issuer,selling_asset_code,selling_asset_issuer);",
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(source_account,asset,asset_code,asset_issuer,buying_asset_code,buying_asset_issuer,selling_asset_code,selling_asset_issuer,tx_id,transaction_hash,ledger_sequence);",
     tags=['scheduled_core']
 ) }}
 
