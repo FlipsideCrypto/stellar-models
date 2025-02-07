@@ -3,11 +3,11 @@
 -- depends_on: {{ ref('core__fact_ledgers') }}
 
 {{ config(
-    materialized="incremental",
-    unique_key=["op_id"],
-    cluster_by=["ledger_sequence","transaction_id","account","type"],
-    partition_by={"field": "closed_at","data_type": "timestamp","granularity": "month"},
-    tags=["core"]
+    materialized='incremental',
+    unique_key=['op_id'],
+    cluster_by=['block_timestamp::DATE', 'closed_at::DATE', 'type_string'],
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(source_account,asset,asset_code,asset_issuer,buying_asset_code,buying_asset_issuer,selling_asset_code,selling_asset_issuer);",
+    tags=['scheduled_core']
 ) }}
 
 WITH operations AS (
@@ -138,7 +138,7 @@ WITH operations AS (
 
 transactions AS (
     SELECT
-        transaction_id,
+        id as tx_id,
         transaction_hash,
         ledger_sequence,
         txn_account,
@@ -187,8 +187,9 @@ ledgers AS (
         ledger_hash,
         previous_ledger_hash,
         transaction_count,
-        operation_count as ledger_operation_count,
+        operation_count AS ledger_operation_count,
         closed_at,
+        closed_at AS block_timestamp,
         ledger_id,
         total_coins,
         fee_pool,
@@ -212,6 +213,9 @@ ledgers AS (
 
 SELECT 
     o.*,
+    l.closed_at,
+    l.block_timestamp,
+    t.tx_id,
     t.transaction_hash,
     t.ledger_sequence,
     t.txn_account,
@@ -245,7 +249,6 @@ SELECT
     l.previous_ledger_hash,
     l.transaction_count,
     l.ledger_operation_count,
-    l.closed_at,
     l.ledger_id,
     l.total_coins,
     l.fee_pool,
