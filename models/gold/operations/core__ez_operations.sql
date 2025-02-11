@@ -6,7 +6,7 @@
     materialized='incremental',
     unique_key=['op_id'],
     cluster_by=['block_timestamp::DATE', 'closed_at::DATE', 'type_string'],
-    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(source_account,asset,asset_code,asset_issuer,buying_asset_code,buying_asset_issuer,selling_asset_code,selling_asset_issuer,tx_id,transaction_hash,ledger_sequence);",
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(op_source_account,asset,asset_code,asset_issuer,buying_asset_code,buying_asset_issuer,selling_asset_code,selling_asset_issuer,tx_id,transaction_hash,ledger_sequence);",
     tags=['scheduled_core']
 ) }}
 
@@ -32,7 +32,7 @@ WITH operations AS (
         buying_asset_code,
         buying_asset_issuer,
         buying_asset_type,
-        `from`,
+        from_account,
         from_muxed,
         from_muxed_id,
         funder,
@@ -41,10 +41,10 @@ WITH operations AS (
         high_threshold,
         home_domain,
         inflation_dest,
-        `into`,
+        into_account,
         into_muxed,
         into_muxed_id,
-        `limit`,
+        limit_amount,
         low_threshold,
         master_key_weight,
         med_threshold,
@@ -67,7 +67,7 @@ WITH operations AS (
         source_asset_type,
         source_max,
         starting_balance,
-        `to`,
+        to_account,
         to_muxed,
         to_muxed_id,
         trustee,
@@ -111,7 +111,7 @@ WITH operations AS (
         shares,
         reserve_a_withdraw_amount,
         reserve_b_withdraw_amount,
-        transaction_id,
+        transaction_id as tx_id,
         type,
         type_string,
         batch_id,
@@ -132,7 +132,13 @@ WITH operations AS (
         _inserted_timestamp
     FROM {{ ref('core__fact_operations') }}
     {% if is_incremental() %}
-    WHERE modified_timestamp >= (SELECT MAX(modified_timestamp) FROM {{ this }})
+    WHERE
+        modified_timestamp >= (
+            SELECT
+                MAX(modified_timestamp)
+            FROM
+                {{ this }}
+        )
     {% endif %}
 ),
 
@@ -141,11 +147,11 @@ transactions AS (
         id as tx_id,
         transaction_hash,
         ledger_sequence,
-        txn_account,
+        account as tx_account,
         account_sequence,
         max_fee,
-        txn_operation_count,
-        txn_created_at,
+        operation_count as tx_operation_count,
+        created_at as tx_created_at,
         memo_type,
         memo,
         time_bounds,
@@ -177,20 +183,26 @@ transactions AS (
         refundable_fee
     FROM {{ ref('core__fact_transactions') }}
     {% if is_incremental() %}
-    WHERE modified_timestamp >= (SELECT MAX(modified_timestamp) FROM {{ this }})
+    WHERE
+        modified_timestamp >= (
+            SELECT
+                MAX(modified_timestamp)
+            FROM
+                {{ this }}
+        )
     {% endif %}
 ),
 
 ledgers AS (
     SELECT
-        sequence,
+        sequence as ledger_sequence,
         ledger_hash,
         previous_ledger_hash,
         transaction_count,
         operation_count AS ledger_operation_count,
         closed_at,
         closed_at AS block_timestamp,
-        ledger_id,
+        id AS ledger_id,
         total_coins,
         fee_pool,
         base_fee,
@@ -207,22 +219,143 @@ ledgers AS (
         batch_run_date
     FROM {{ ref('core__fact_ledgers') }}
     {% if is_incremental() %}
-    WHERE modified_timestamp >= (SELECT MAX(modified_timestamp) FROM {{ this }})
+    WHERE
+        modified_timestamp >= (
+            SELECT
+                MAX(modified_timestamp)
+            FROM
+                {{ this }}
+        )
+    AND ledger_sequence = 55184199
     {% endif %}
 )
 
 SELECT 
-    o.*,
+    o.op_id,
+    o.op_source_account,
+    o.op_source_account_muxed,
+    o.op_account_id,
+    o.amount,
+    o.asset,
+    o.asset_code,
+    o.asset_issuer,
+    o.asset_type,
+    o.authorize,
+    o.balance_id,
+    o.claimant,
+    o.claimant_muxed,
+    o.claimant_muxed_id,
+    o.claimants,
+    o.data_account_id,
+    o.data_name,
+    o.buying_asset_code,
+    o.buying_asset_issuer,
+    o.buying_asset_type,
+    o.from_account,
+    o.from_muxed,
+    o.from_muxed_id,
+    o.funder,
+    o.funder_muxed,
+    o.funder_muxed_id,
+    o.high_threshold,
+    o.home_domain,
+    o.inflation_dest,
+    o.into_account,
+    o.into_muxed,
+    o.into_muxed_id,
+    o.limit_amount,
+    o.low_threshold,
+    o.master_key_weight,
+    o.med_threshold,
+    o.name,
+    o.offer_id,
+    o.path,
+    o.price,
+    o.price_r,
+    o.selling_asset_code,
+    o.selling_asset_issuer,
+    o.selling_asset_type,
+    o.set_flags,
+    o.set_flags_s,
+    o.signer_account_id,
+    o.signer_key,
+    o.signer_weight,
+    o.source_amount,
+    o.source_asset_code,
+    o.source_asset_issuer,
+    o.source_asset_type,
+    o.source_max,
+    o.starting_balance,
+    o.to_account,
+    o.to_muxed,
+    o.to_muxed_id,
+    o.trustee,
+    o.trustee_muxed,
+    o.trustee_muxed_id,
+    o.trustor,
+    o.trustor_muxed,
+    o.trustor_muxed_id,
+    o.trustline_account_id,
+    o.trustline_asset,
+    o.value,
+    o.clear_flags,
+    o.clear_flags_s,
+    o.destination_min,
+    o.bump_to,
+    o.sponsor,
+    o.sponsored_id,
+    o.begin_sponsor,
+    o.begin_sponsor_muxed,
+    o.begin_sponsor_muxed_id,
+    o.authorize_to_maintain_liabilities,
+    o.clawback_enabled,
+    o.liquidity_pool_id,
+    o.reserve_a_asset_type,
+    o.reserve_a_asset_code,
+    o.reserve_a_asset_issuer,
+    o.reserve_a_max_amount,
+    o.reserve_a_deposit_amount,
+    o.reserve_b_asset_type,
+    o.reserve_b_asset_code,
+    o.reserve_b_asset_issuer,
+    o.reserve_b_max_amount,
+    o.reserve_b_deposit_amount,
+    o.min_price,
+    o.min_price_r,
+    o.max_price,
+    o.max_price_r,
+    o.shares_received,
+    o.reserve_a_min_amount,
+    o.reserve_b_min_amount,
+    o.shares,
+    o.reserve_a_withdraw_amount,
+    o.reserve_b_withdraw_amount,
+    o.tx_id,
+    o.type,
+    o.type_string,
+    o.batch_id,
+    o.batch_run_date,
+    o.asset_balance_changes,
+    o.parameters,
+    o.parameters_decoded,
+    o.function,
+    o.address,
+    o.soroban_operation_type,
+    o.extend_to,
+    o.contract_id,
+    o.contract_code_hash,
+    o.operation_result_code,
+    o.operation_trace_code,
+    o.details_json,
     l.closed_at,
     l.block_timestamp,
-    t.tx_id,
     t.transaction_hash,
     t.ledger_sequence,
-    t.txn_account,
+    t.tx_account,
     t.account_sequence,
     t.max_fee,
-    t.txn_operation_count,
-    t.txn_created_at,
+    t.tx_operation_count,
+    t.tx_created_at,
     t.memo_type,
     t.memo,
     t.time_bounds,
@@ -273,6 +406,6 @@ SELECT
     '{{ invocation_id }}' AS _invocation_id
 FROM operations o
 LEFT JOIN transactions t 
-    ON o.transaction_id = t.transaction_id
+    on o.tx_id = t.tx_id
 LEFT JOIN ledgers l 
-    ON t.ledger_sequence = l.sequence
+    ON t.ledger_sequence = l.ledger_sequence
