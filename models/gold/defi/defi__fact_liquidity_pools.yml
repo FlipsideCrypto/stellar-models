@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: core__fact_liquidity_pools
+  - name: defi__fact_liquidity_pools
     description: Fact table containing liquidity pool data including pool details, asset pairs, and metrics.
     
     columns:

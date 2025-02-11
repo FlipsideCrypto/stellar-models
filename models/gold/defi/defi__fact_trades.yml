@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: core__fact_trades
+  - name: defi__fact_trades
     description: A fact table containing trade execution details from both the decentralized exchange and liquidity pools.
     columns:
       - name: history_operation_id

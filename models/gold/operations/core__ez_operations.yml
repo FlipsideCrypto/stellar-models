@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: ez__operations
+  - name: core__ez_operations
     description: A comprehensive view combining operations with their associated transaction and ledger data.
     config:
       tags: ["core"]
