@@ -73,8 +73,7 @@ WITH pre_final AS (
             VALUE :closed_at :: INT,
             6
         ) AS closed_at,
-        VALUE :ledger_sequence :: INT,
-        ledger_sequence,
+        VALUE :ledger_sequence :: INT AS ledger_sequence,
         _inserted_timestamp
     FROM
 
