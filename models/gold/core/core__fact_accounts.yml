@@ -1,0 +1,145 @@
+version: 2
+
+models:
+  - name: core__fact_accounts
+    description: Core fact table containing all Stellar account information and their current states
+    columns:
+      - name: ACCOUNT_ID
+        description: "{{ doc('account_id') }}"
+        tests:
+          - not_null
+
+      - name: BALANCE
+        description: '{{ doc("balance") }}'
+        tests:
+          - not_null
+
+      - name: BUYING_LIABILITIES
+        description: '{{ doc("buying_liabilities") }}'
+        tests:
+          - not_null
+
+      - name: SELLING_LIABILITIES
+        description: '{{ doc("selling_liabilities") }}'
+        tests:
+          - not_null
+
+      - name: SEQUENCE_NUMBER
+        description: '{{ doc("sequence_number") }}'
+        tests:
+          - not_null
+
+      - name: NUM_SUBENTRIES
+        description: '{{ doc("num_subentries") }}'
+        tests:
+          - not_null
+
+      - name: INFLATION_DESTINATION
+        description: '{{ doc("inflation_destination") }}'
+
+      - name: FLAGS
+        description: '{{ doc("flags") }}'
+        tests:
+          - not_null
+
+      - name: HOME_DOMAIN
+        description: '{{ doc("home_domain") }}'
+
+      - name: MASTER_WEIGHT
+        description: '{{ doc("master_weight") }}'
+        tests:
+          - not_null
+
+      - name: THRESHOLD_LOW
+        description: '{{ doc("threshold_low") }}'
+        tests:
+          - not_null
+
+      - name: THRESHOLD_MEDIUM
+        description: '{{ doc("threshold_medium") }}'
+        tests:
+          - not_null
+
+      - name: THRESHOLD_HIGH
+        description: '{{ doc("threshold_high") }}'
+        tests:
+          - not_null
+
+      - name: LAST_MODIFIED_LEDGER
+        description: '{{ doc("last_modified_ledger") }}'
+        tests:
+          - not_null
+
+      - name: LEDGER_ENTRY_CHANGE
+        description: '{{ doc("ledger_entry_change") }}'
+        tests:
+          - not_null
+
+      - name: DELETED
+        description: '{{ doc("deleted") }}'
+        tests:
+          - not_null
+
+      - name: BATCH_ID
+        description: '{{ doc("batch_id") }}'
+
+      - name: BATCH_RUN_DATE
+        description: '{{ doc("batch_run_date") }}'
+
+      - name: BATCH_INSERT_TS
+        description: '{{ doc("batch_insert_ts") }}'
+
+      - name: SPONSOR
+        description: '{{ doc("sponsor") }}'
+
+      - name: NUM_SPONSORED
+        description: '{{ doc("num_sponsored") }}'
+        tests:
+          - not_null
+
+      - name: NUM_SPONSORING
+        description: '{{ doc("num_sponsoring") }}'
+        tests:
+          - not_null
+
+      - name: SEQUENCE_LEDGER
+        description: '{{ doc("sequence_ledger") }}'
+        tests:
+          - not_null
+
+      - name: SEQUENCE_TIME
+        description: '{{ doc("sequence_time") }}'
+        tests:
+          - not_null
+
+      - name: CLOSED_AT
+        description: '{{ doc("closed_at") }}'
+        tests:
+          - not_null
+
+      - name: LEDGER_SEQUENCE
+        description: '{{ doc("ledger_sequence") }}'
+        tests:
+          - not_null
+
+      - name: FACT_ACCOUNTS_ID
+        description: '{{ doc("pk") }}'
+        tests:
+          - unique
+          - not_null
+
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'
+        tests:
+          - not_null
+
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'
+        tests:
+          - not_null
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ACCOUNT_ID
+            - CLOSED_AT

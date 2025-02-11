@@ -1,0 +1,142 @@
+version: 2
+
+models:
+  - name: core__fact_ledgers
+    description: Fact table containing information about ledgers on the Stellar network.
+    columns:
+      - name: SEQUENCE
+        description: '{{ doc("sequence") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+          - not_null
+          - unique
+
+      - name: LEDGER_HASH  
+        description: '{{ doc("ledger_hash") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+          - not_null
+
+      - name: PREVIOUS_LEDGER_HASH
+        description: '{{ doc("previous_ledger_hash") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: TRANSACTION_COUNT
+        description: '{{ doc("transaction_count") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: OPERATION_COUNT
+        description: '{{ doc("operation_count") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: CLOSED_AT
+        description: '{{ doc("closed_at") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+          - not_null
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
+
+      - name: ID
+        description: '{{ doc("id") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+          - not_null
+
+      - name: TOTAL_COINS
+        description: '{{ doc("total_coins") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: FEE_POOL
+        description: '{{ doc("fee_pool") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: BASE_FEE
+        description: '{{ doc("base_fee") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: BASE_RESERVE
+        description: '{{ doc("base_reserve") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: MAX_TX_SET_SIZE
+        description: '{{ doc("max_tx_set_size") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: PROTOCOL_VERSION
+        description: '{{ doc("protocol_version") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      # - name: LEDGER_HEADER
+      #   description: '{{ doc("ledger_header") }}'
+      #   tests:
+      #     - dbt_expectations.expect_column_to_exist
+
+      - name: SUCCESSFUL_TRANSACTION_COUNT
+        description: '{{ doc("successful_transaction_count") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: FAILED_TRANSACTION_COUNT
+        description: '{{ doc("failed_transaction_count") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: TX_SET_OPERATION_COUNT
+        description: '{{ doc("tx_set_operation_count") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: SOROBAN_FEE_WRITE_1KB
+        description: '{{ doc("soroban_fee_write_1kb") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: NODE_ID
+        description: '{{ doc("node_id") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: SIGNATURE
+        description: '{{ doc("signature") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: TOTAL_BYTE_SIZE_OF_BUCKET_LIST
+        description: '{{ doc("total_byte_size_of_bucket_list") }}'
+        tests:
+          - dbt_expectations.expect_column_to_exist
+
+      - name: FACT_LEDGERS_ID
+        description: '{{ doc("pk") }}'
+        tests:
+          - unique
+          - not_null
+
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'
+        tests:
+          - not_null
+
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'
+        tests:
+          - not_null
+
+      - name: _INVOCATION_ID
+        description: '{{ doc("invocation_id") }}'
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - SEQUENCE

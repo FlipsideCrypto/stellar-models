@@ -73,10 +73,8 @@ WITH pre_final AS (
             VALUE :closed_at :: INT,
             6
         ) AS closed_at,
-        TO_TIMESTAMP(
-            VALUE :ledger_sequence :: INT,
-            6
-        ) AS ledger_sequence,
+        VALUE :ledger_sequence :: INT,
+        ledger_sequence,
         _inserted_timestamp
     FROM
 
@@ -85,11 +83,12 @@ WITH pre_final AS (
 {% else %}
     {{ ref('bronze__accounts_FR') }}
 {% endif %}
+WHERE
+    account_id IS NOT NULL
 
 {% if is_incremental() %}
-WHERE
-    partition_gte_id >= '{{ max_part }}'
-    AND _inserted_timestamp > '{{ max_is }}'
+AND partition_gte_id >= '{{ max_part }}'
+AND _inserted_timestamp > '{{ max_is }}'
 {% endif %}
 
 qualify ROW_NUMBER() over (

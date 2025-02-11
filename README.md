@@ -23,12 +23,11 @@ stellar:
 ```
 
 ### Resources:
+- Learn more about Stellar's [Hubble dataset](https://developers.stellar.org/docs/data/hubble)
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
 - Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
 - Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
 - Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
-
 - Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
 
 ## Applying Model Tags
@@ -63,12 +62,12 @@ To add/update a model's snowflake tags, add/modify the `meta` model property und
 By default, model tags are not pushed to snowflake on each load.  You can push a tag update for a model by specifying the `UPDATE_SNOWFLAKE_TAGS` project variable during a run.
 
 ```
-dbt run --var '{"UPDATE_SNOWFLAKE_TAGS":True}' -s models/core/core__fact_swaps.sql
+dbt run --var '{"UPDATE_SNOWFLAKE_TAGS":True}' -s models/core/core__fact_trades.sql
 ```
 
 ### Querying for existing tags on a model in snowflake
 
 ```
 select *
-from table(stellar.information_schema.tag_references('stellar.core.fact_blocks', 'table'));
+from table(stellar.information_schema.tag_references('stellar.core.fact_ledgers', 'table'));
 ```
