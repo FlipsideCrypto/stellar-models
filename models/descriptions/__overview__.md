@@ -20,6 +20,7 @@ There is more information on how to use dbt docs in the last section of this doc
 
 **Dimension Tables:**
 - [core.dim_assets](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__dim_assets)
+- [core.dim_labels](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__dim_labels)
 
 **Fact Tables:**
 - [core.fact_accounts](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__fact_accounts)
