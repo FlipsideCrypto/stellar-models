@@ -1,0 +1,39 @@
+version: 2
+models:
+  - name: silver__accounts
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ACCOUNT_ID
+            - SEQUENCE_NUMBER
+            - LEDGER_ENTRY_CHANGE
+            - LAST_MODIFIED_LEDGER
+    columns:
+      - name: ACCOUNT_ID
+        description: "{{ doc('account_id') }}"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_type_list:
+              column_type_list:
+                - VARCHAR
+      - name: SEQUENCE_NUMBER
+        description: "{{ doc('sequence_number') }}"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_type_list:
+              column_type_list:
+                - NUMBER
+      - name: LEDGER_ENTRY_CHANGE
+        description: "{{ doc('ledger_entry_change') }}"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_type_list:
+              column_type_list:
+                - NUMBER
+      - name: LAST_MODIFIED_LEDGER
+        description: "{{ doc('last_modified_ledger') }}"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_type_list:
+              column_type_list:
+                - NUMBER
