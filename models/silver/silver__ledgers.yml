@@ -1,0 +1,9 @@
+version: 2
+models:
+  - name: silver__ledgers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - SEQUENCE
+      - fsc_utils.sequence_gaps:
+          column_name: SEQUENCE

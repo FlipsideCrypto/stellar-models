@@ -3,113 +3,525 @@ version: 2
 models:
   - name: core__ez_operations
     description: A comprehensive view combining operations with their associated transaction and ledger data.
-    config:
-      tags: ["core"]
-    
     columns:
-      - name: fact_operations_id
-        description: '{{ doc("pk") }}'
-        tests:
-          - unique
-          - not_null
 
-      - name: op_id
+      - name: OP_ID
         description: '{{ doc("op_id") }}'
         tests:
           - not_null
 
-      - name: transaction_id
-        description: '{{ doc("transaction_id") }}'
+      - name: OP_SOURCE_ACCOUNT
+        description: '{{ doc("op_source_account") }}'
 
-      - name: type
-        description: '{{ doc("type") }}'
+      - name: OP_SOURCE_ACCOUNT_MUXED
+        description: '{{ doc("op_source_account_muxed") }}'
 
-      - name: account
-        description: '{{ doc("account") }}'
+      - name: OP_ACCOUNT_ID
+        description: '{{ doc("account_id") }}'
 
-      - name: amount
+      - name: AMOUNT
         description: '{{ doc("amount") }}'
 
-      - name: asset_code
+      - name: ASSET
+        description: '{{ doc("asset") }}'
+
+      - name: ASSET_CODE
         description: '{{ doc("asset_code") }}'
 
-      - name: asset_issuer
+      - name: ASSET_ISSUER
         description: '{{ doc("asset_issuer") }}'
 
-      - name: asset_type
+      - name: ASSET_TYPE
         description: '{{ doc("asset_type") }}'
 
-      - name: transaction_hash
-        description: '{{ doc("transaction_hash") }}'
+      - name: AUTHORIZE
+        description: '{{ doc("authorize") }}'
 
-      - name: ledger_sequence
-        description: '{{ doc("ledger_sequence") }}'
+      - name: BALANCE_ID
+        description: '{{ doc("balance_id") }}'
 
-      - name: closed_at
-        description: '{{ doc("closed_at") }}'
+      - name: CLAIMANT
+        description: '{{ doc("claimant") }}'
 
-      - name: successful
-        description: '{{ doc("successful") }}'
+      - name: CLAIMANT_MUXED
+        description: '{{ doc("claimant_muxed") }}'
 
-      - name: operation_result_code
-        description: '{{ doc("operation_result_code") }}'
+      - name: CLAIMANT_MUXED_ID
+        description: '{{ doc("claimant_muxed_id") }}'
 
-      - name: operation_trace_code
-        description: '{{ doc("operation_trace_code") }}'
+      - name: CLAIMANTS
+        description: '{{ doc("claimants") }}'
 
-      - name: details_json
-        description: '{{ doc("details_json") }}'
+      - name: DATA_ACCOUNT_ID
+        description: '{{ doc("data_account_id") }}'
 
-      - name: asset_balance_changes
+      - name: DATA_NAME
+        description: '{{ doc("data_name") }}'
+
+      - name: BUYING_ASSET_CODE
+        description: '{{ doc("buying_asset_code") }}'
+
+      - name: BUYING_ASSET_ISSUER
+        description: '{{ doc("buying_asset_issuer") }}'
+
+      - name: BUYING_ASSET_TYPE
+        description: '{{ doc("buying_asset_type") }}'
+
+      - name: FROM_ACCOUNT
+        description: '{{ doc("from_account") }}'
+
+      - name: FROM_MUXED
+        description: '{{ doc("from_muxed") }}'
+
+      - name: FROM_MUXED_ID
+        description: '{{ doc("from_muxed_id") }}'
+
+      - name: FUNDER
+        description: '{{ doc("funder") }}'
+
+      - name: FUNDER_MUXED
+        description: '{{ doc("funder_muxed") }}'
+
+      - name: FUNDER_MUXED_ID
+        description: '{{ doc("funder_muxed_id") }}'
+
+      - name: HIGH_THRESHOLD
+        description: '{{ doc("high_threshold") }}'
+
+      - name: HOME_DOMAIN
+        description: '{{ doc("home_domain") }}'
+
+      - name: INFLATION_DEST
+        description: '{{ doc("inflation_dest") }}'
+
+      - name: INTO_ACCOUNT
+        description: '{{ doc("into") }}'
+
+      - name: INTO_MUXED
+        description: '{{ doc("into_muxed") }}'
+
+      - name: INTO_MUXED_ID
+        description: '{{ doc("into_muxed_id") }}'
+
+      - name: LIMIT_AMOUNT
+        description: '{{ doc("limit_amount") }}'
+
+      - name: LOW_THRESHOLD
+        description: '{{ doc("low_threshold") }}'
+
+      - name: MASTER_KEY_WEIGHT
+        description: '{{ doc("master_key_weight") }}'
+
+      - name: MED_THRESHOLD
+        description: '{{ doc("med_threshold") }}'
+
+      - name: NAME
+        description: '{{ doc("name") }}'
+
+      - name: OFFER_ID
+        description: '{{ doc("offer_id") }}'
+
+      - name: PATH
+        description: '{{ doc("path") }}'
+
+      - name: PRICE
+        description: '{{ doc("price") }}'
+
+      - name: PRICE_R
+        description: '{{ doc("price_r") }}'
+
+      - name: SELLING_ASSET_CODE
+        description: '{{ doc("selling_asset_code") }}'
+
+      - name: SELLING_ASSET_ISSUER
+        description: '{{ doc("selling_asset_issuer") }}'
+
+      - name: SELLING_ASSET_TYPE
+        description: '{{ doc("selling_asset_type") }}'
+
+      - name: SET_FLAGS
+        description: '{{ doc("set_flags") }}'
+
+      - name: SET_FLAGS_S
+        description: '{{ doc("set_flags_s") }}'
+
+      - name: SIGNER_ACCOUNT_ID
+        description: '{{ doc("signer_account_id") }}'
+
+      - name: SIGNER_KEY
+        description: '{{ doc("signer_key") }}'
+
+      - name: SIGNER_WEIGHT
+        description: '{{ doc("signer_weight") }}'
+
+      - name: SOURCE_AMOUNT
+        description: '{{ doc("source_amount") }}'
+
+      - name: SOURCE_ASSET_CODE
+        description: '{{ doc("source_asset_code") }}'
+
+      - name: SOURCE_ASSET_ISSUER
+        description: '{{ doc("source_asset_issuer") }}'
+
+      - name: SOURCE_ASSET_TYPE
+        description: '{{ doc("source_asset_type") }}'
+
+      - name: SOURCE_MAX
+        description: '{{ doc("source_max") }}'
+
+      - name: STARTING_BALANCE
+        description: '{{ doc("starting_balance") }}'
+
+      - name: TO_ACCOUNT
+        description: '{{ doc("to") }}'
+
+      - name: TO_MUXED
+        description: '{{ doc("to_muxed") }}'
+
+      - name: TO_MUXED_ID
+        description: '{{ doc("to_muxed_id") }}'
+
+      - name: TRUSTEE
+        description: '{{ doc("trustee") }}'
+
+      - name: TRUSTEE_MUXED
+        description: '{{ doc("trustee_muxed") }}'
+
+      - name: TRUSTEE_MUXED_ID
+        description: '{{ doc("trustee_muxed_id") }}'
+
+      - name: TRUSTOR
+        description: '{{ doc("trustor") }}'
+
+      - name: TRUSTOR_MUXED
+        description: '{{ doc("trustor_muxed") }}'
+
+      - name: TRUSTOR_MUXED_ID
+        description: '{{ doc("trustor_muxed_id") }}'
+
+      - name: TRUSTLINE_ACCOUNT_ID
+        description: '{{ doc("trustline_account_id") }}'
+
+      - name: TRUSTLINE_ASSET
+        description: '{{ doc("trustline_asset") }}'
+
+      - name: VALUE
+        description: '{{ doc("value") }}'
+
+      - name: CLEAR_FLAGS
+        description: '{{ doc("clear_flags") }}'
+
+      - name: CLEAR_FLAGS_S
+        description: '{{ doc("clear_flags_s") }}'
+
+      - name: DESTINATION_MIN
+        description: '{{ doc("destination_min") }}'
+
+      - name: BUMP_TO
+        description: '{{ doc("bump_to") }}'
+
+      - name: SPONSOR
+        description: '{{ doc("sponsor") }}'
+
+      - name: SPONSORED_ID
+        description: '{{ doc("sponsored_id") }}'
+
+      - name: BEGIN_SPONSOR
+        description: '{{ doc("begin_sponsor") }}'
+
+      - name: BEGIN_SPONSOR_MUXED
+        description: '{{ doc("begin_sponsor_muxed") }}'
+
+      - name: BEGIN_SPONSOR_MUXED_ID
+        description: '{{ doc("begin_sponsor_muxed_id") }}'
+
+      - name: AUTHORIZE_TO_MAINTAIN_LIABILITIES
+        description: '{{ doc("authorize_to_maintain_liabilities") }}'
+
+      - name: CLAWBACK_ENABLED
+        description: '{{ doc("clawback_enabled") }}'
+
+      - name: LIQUIDITY_POOL_ID
+        description: '{{ doc("liquidity_pool_id") }}'
+
+      - name: RESERVE_A_ASSET_TYPE
+        description: '{{ doc("reserve_a_asset_type") }}'
+
+      - name: RESERVE_A_ASSET_CODE
+        description: '{{ doc("reserve_a_asset_code") }}'
+
+      - name: RESERVE_A_ASSET_ISSUER
+        description: '{{ doc("reserve_a_asset_issuer") }}'
+
+      - name: RESERVE_A_MAX_AMOUNT
+        description: '{{ doc("reserve_a_max_amount") }}'
+
+      - name: RESERVE_A_DEPOSIT_AMOUNT
+        description: '{{ doc("reserve_a_deposit_amount") }}'
+
+      - name: RESERVE_B_ASSET_TYPE
+        description: '{{ doc("reserve_b_asset_type") }}'
+
+      - name: RESERVE_B_ASSET_CODE
+        description: '{{ doc("reserve_b_asset_code") }}'
+
+      - name: RESERVE_B_ASSET_ISSUER
+        description: '{{ doc("reserve_b_asset_issuer") }}'
+
+      - name: RESERVE_B_MAX_AMOUNT
+        description: '{{ doc("reserve_b_max_amount") }}'
+
+      - name: RESERVE_B_DEPOSIT_AMOUNT
+        description: '{{ doc("reserve_b_deposit_amount") }}'
+
+      - name: MIN_PRICE
+        description: '{{ doc("min_price") }}'
+
+      - name: MIN_PRICE_R
+        description: '{{ doc("min_price_r") }}'
+
+      - name: MAX_PRICE
+        description: '{{ doc("max_price") }}'
+
+      - name: MAX_PRICE_R
+        description: '{{ doc("max_price_r") }}'
+
+      - name: SHARES_RECEIVED
+        description: '{{ doc("shares_received") }}'
+
+      - name: RESERVE_A_MIN_AMOUNT
+        description: '{{ doc("reserve_a_min_amount") }}'
+
+      - name: RESERVE_B_MIN_AMOUNT
+        description: '{{ doc("reserve_b_min_amount") }}'
+
+      - name: SHARES
+        description: '{{ doc("shares") }}'
+
+      - name: RESERVE_A_WITHDRAW_AMOUNT
+        description: '{{ doc("reserve_a_withdraw_amount") }}'
+
+      - name: RESERVE_B_WITHDRAW_AMOUNT
+        description: '{{ doc("reserve_b_withdraw_amount") }}'
+
+      - name: TX_ID
+        description: '{{ doc("transaction_id") }}'
+
+      - name: TYPE
+        description: '{{ doc("type") }}'
+
+      - name: TYPE_STRING
+        description: '{{ doc("type_string") }}'
+
+      - name: BATCH_ID
+        description: '{{ doc("batch_id") }}'
+
+      - name: BATCH_RUN_DATE
+        description: '{{ doc("batch_run_date") }}'
+
+      - name: ASSET_BALANCE_CHANGES
         description: '{{ doc("asset_balance_changes") }}'
 
-      - name: parameters
+      - name: PARAMETERS
         description: '{{ doc("parameters") }}'
 
-      - name: parameters_decoded
+      - name: PARAMETERS_DECODED
         description: '{{ doc("parameters_decoded") }}'
 
-      - name: function
+      - name: FUNCTION
         description: '{{ doc("function") }}'
 
-      - name: contract_id
+      - name: ADDRESS
+        description: '{{ doc("address") }}'
+
+      - name: SOROBAN_OPERATION_TYPE
+        description: '{{ doc("soroban_operation_type") }}'
+
+      - name: EXTEND_TO
+        description: '{{ doc("extend_to") }}'
+
+      - name: CONTRACT_ID
         description: '{{ doc("contract_id") }}'
 
-      - name: contract_code_hash
+      - name: CONTRACT_CODE_HASH
         description: '{{ doc("contract_code_hash") }}'
 
-      - name: resource_fee
+      - name: OPERATION_RESULT_CODE
+        description: '{{ doc("operation_result_code") }}'
+
+      - name: OPERATION_TRACE_CODE
+        description: '{{ doc("operation_trace_code") }}'
+
+      - name: DETAILS_JSON
+        description: '{{ doc("details_json") }}'
+
+      - name: CLOSED_AT
+        description: '{{ doc("closed_at") }}'
+
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}'
+
+      - name: TRANSACTION_HASH
+        description: '{{ doc("transaction_hash") }}'
+
+      - name: LEDGER_SEQUENCE
+        description: '{{ doc("ledger_sequence") }}'
+
+      - name: TX_ACCOUNT
+        description: '{{ doc("tx_account") }}'
+
+      - name: ACCOUNT_SEQUENCE
+        description: '{{ doc("account_sequence") }}'
+
+      - name: MAX_FEE
+        description: '{{ doc("max_fee") }}'
+
+      - name: TX_OPERATION_COUNT
+        description: '{{ doc("tx_operation_count") }}'
+
+      - name: TX_CREATED_AT
+        description: '{{ doc("tx_created_at") }}'
+
+      - name: MEMO_TYPE
+        description: '{{ doc("memo_type") }}'
+
+      - name: MEMO
+        description: '{{ doc("memo") }}'
+
+      - name: TIME_BOUNDS
+        description: '{{ doc("time_bounds") }}'
+
+      - name: SUCCESSFUL
+        description: '{{ doc("successful") }}'
+
+      - name: FEE_CHARGED
+        description: '{{ doc("fee_charged") }}'
+
+      - name: FEE_ACCOUNT
+        description: '{{ doc("fee_account") }}'
+
+      - name: NEW_MAX_FEE
+        description: '{{ doc("new_max_fee") }}'
+
+      - name: ACCOUNT_MUXED
+        description: '{{ doc("account_muxed") }}'
+
+      - name: FEE_ACCOUNT_MUXED
+        description: '{{ doc("fee_account_muxed") }}'
+
+      - name: LEDGER_BOUNDS
+        description: '{{ doc("ledger_bounds") }}'
+
+      - name: MIN_ACCOUNT_SEQUENCE
+        description: '{{ doc("min_account_sequence") }}'
+
+      - name: MIN_ACCOUNT_SEQUENCE_AGE
+        description: '{{ doc("min_account_sequence_age") }}'
+
+      - name: MIN_ACCOUNT_SEQUENCE_LEDGER_GAP
+        description: '{{ doc("min_account_sequence_ledger_gap") }}'
+
+      - name: EXTRA_SIGNERS
+        description: '{{ doc("extra_signers") }}'
+
+      - name: RESOURCE_FEE
         description: '{{ doc("resource_fee") }}'
 
-      - name: soroban_resources_instructions
+      - name: SOROBAN_RESOURCES_INSTRUCTIONS
         description: '{{ doc("soroban_resources_instructions") }}'
 
-      - name: soroban_resources_read_bytes
+      - name: SOROBAN_RESOURCES_READ_BYTES
         description: '{{ doc("soroban_resources_read_bytes") }}'
 
-      - name: soroban_resources_write_bytes
+      - name: SOROBAN_RESOURCES_WRITE_BYTES
         description: '{{ doc("soroban_resources_write_bytes") }}'
 
-      - name: non_refundable_resource_fee_charged
+      - name: TRANSACTION_RESULT_CODE
+        description: '{{ doc("transaction_result_code") }}'
+
+      - name: INCLUSION_FEE_BID
+        description: '{{ doc("inclusion_fee_bid") }}'
+
+      - name: INCLUSION_FEE_CHARGED
+        description: '{{ doc("inclusion_fee_charged") }}'
+
+      - name: RESOURCE_FEE_REFUND
+        description: '{{ doc("resource_fee_refund") }}'
+
+      - name: LEDGER_HASH
+        description: '{{ doc("ledger_hash") }}'
+
+      - name: PREVIOUS_LEDGER_HASH
+        description: '{{ doc("previous_ledger_hash") }}'
+
+      - name: TRANSACTION_COUNT
+        description: '{{ doc("transaction_count") }}'
+
+      - name: LEDGER_OPERATION_COUNT
+        description: '{{ doc("ledger_operation_count") }}'
+
+      - name: LEDGER_ID
+        description: '{{ doc("ledger_id") }}'
+
+      - name: TOTAL_COINS
+        description: '{{ doc("total_coins") }}'
+
+      - name: FEE_POOL
+        description: '{{ doc("fee_pool") }}'
+
+      - name: BASE_FEE
+        description: '{{ doc("base_fee") }}'
+
+      - name: BASE_RESERVE
+        description: '{{ doc("base_reserve") }}'
+
+      - name: MAX_TX_SET_SIZE
+        description: '{{ doc("max_tx_set_size") }}'
+
+      - name: PROTOCOL_VERSION
+        description: '{{ doc("protocol_version") }}'
+
+      - name: SUCCESSFUL_TRANSACTION_COUNT
+        description: '{{ doc("successful_transaction_count") }}'
+
+      - name: FAILED_TRANSACTION_COUNT
+        description: '{{ doc("failed_transaction_count") }}'
+
+      - name: SOROBAN_FEE_WRITE_1KB
+        description: '{{ doc("soroban_fee_write_1kb") }}'
+
+      - name: NODE_ID
+        description: '{{ doc("node_id") }}'
+
+      - name: SIGNATURE
+        description: '{{ doc("signature") }}'
+
+      - name: TOTAL_BYTE_SIZE_OF_BUCKET_LIST
+        description: '{{ doc("total_byte_size_of_bucket_list") }}'
+
+      - name: NON_REFUNDABLE_RESOURCE_FEE_CHARGED
         description: '{{ doc("non_refundable_resource_fee_charged") }}'
 
-      - name: refundable_resource_fee_charged
+      - name: REFUNDABLE_RESOURCE_FEE_CHARGED
         description: '{{ doc("refundable_resource_fee_charged") }}'
 
-      - name: rent_fee_charged
+      - name: RENT_FEE_CHARGED
         description: '{{ doc("rent_fee_charged") }}'
 
-      - name: tx_signers
+      - name: TX_SIGNERS
         description: '{{ doc("tx_signers") }}'
 
-      - name: refundable_fee
+      - name: REFUNDABLE_FEE
         description: '{{ doc("refundable_fee") }}'
 
-      - name: inserted_timestamp
+      - name: FACT_OPERATIONS_ID
+        description: '{{ doc("pk") }}'
+
+      - name: INSERTED_TIMESTAMP
         description: '{{ doc("inserted_timestamp") }}'
 
-      - name: modified_timestamp
+      - name: MODIFIED_TIMESTAMP
         description: '{{ doc("modified_timestamp") }}'
 
-      - name: _invocation_id
+      - name: _INVOCATION_ID
         description: '{{ doc("invocation_id") }}'

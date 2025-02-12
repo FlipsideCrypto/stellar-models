@@ -3,40 +3,43 @@ version: 2
 models:
   - name: core__dim_assets
     description: Dimension table containing information about assets on the network.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ASSET_TYPE
+            - ASSET_CODE
+            - ASSET_ISSUER
     columns:
-      - name: ID
-        description: '{{ doc("id") }}'
+      - name: ASSET_ID
+        description: '{{ doc("asset_id") }}'
         tests:
-          - dbt_expectations.expect_column_to_exist
+          - not_null
 
       - name: ASSET_TYPE
         description: '{{ doc("asset_type") }}'
         tests:
-          - dbt_expectations.expect_column_to_exist
           - not_null
 
       - name: ASSET_CODE
         description: '{{ doc("asset_code") }}'
         tests:
-          - dbt_expectations.expect_column_to_exist
+          - not_null:
+              where: asset_type != 'native'
 
       - name: ASSET_ISSUER
         description: '{{ doc("asset_issuer") }}'
         tests:
-          - dbt_expectations.expect_column_to_exist
+          - not_null:
+              where: asset_type != 'native'
 
-      - name: ASSET_ID
-        description: '{{ doc("asset_id") }}'
-        tests:
-          - dbt_expectations.expect_column_to_exist
-          - not_null
-          - unique
+      - name: ID
+        description: 'Numeric hash of asset_id, asset_type, and asset_issuer for join operations'
 
       - name: DIM_ASSETS_ID
         description: '{{ doc("pk") }}'
         tests:
-          - unique
           - not_null
+          - unique
 
       - name: INSERTED_TIMESTAMP
         description: '{{ doc("inserted_timestamp") }}'
@@ -47,8 +50,3 @@ models:
         description: '{{ doc("modified_timestamp") }}'
         tests:
           - not_null
-
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - asset_id

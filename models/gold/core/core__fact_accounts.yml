@@ -3,6 +3,13 @@ version: 2
 models:
   - name: core__fact_accounts
     description: Core fact table containing all Stellar account information and their current states
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ACCOUNT_ID
+            - SEQUENCE_NUMBER
+            - LEDGER_ENTRY_CHANGE
+            - LAST_MODIFIED_LEDGER
     columns:
       - name: ACCOUNT_ID
         description: "{{ doc('account_id') }}"
@@ -80,15 +87,6 @@ models:
         tests:
           - not_null
 
-      - name: BATCH_ID
-        description: '{{ doc("batch_id") }}'
-
-      - name: BATCH_RUN_DATE
-        description: '{{ doc("batch_run_date") }}'
-
-      - name: BATCH_INSERT_TS
-        description: '{{ doc("batch_insert_ts") }}'
-
       - name: SPONSOR
         description: '{{ doc("sponsor") }}'
 
@@ -117,6 +115,11 @@ models:
         tests:
           - not_null
 
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}'
+        tests:
+          - not_null
+
       - name: LEDGER_SEQUENCE
         description: '{{ doc("ledger_sequence") }}'
         tests:
@@ -137,9 +140,3 @@ models:
         description: '{{ doc("modified_timestamp") }}'
         tests:
           - not_null
-
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - ACCOUNT_ID
-            - CLOSED_AT
