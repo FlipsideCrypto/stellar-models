@@ -28,6 +28,9 @@ There is more information on how to use dbt docs in the last section of this doc
 - [core.fact_operations](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__fact_operations)
 - [core.fact_transactions](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__fact_transactions)
 
+**Convenience Views:**
+- [core.ez_operations](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__ez_operations)
+
 ### DeFi Tables (`stellar`.`DEFI`.`<table_name>`)
 
 **Fact Tables:**
