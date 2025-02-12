@@ -1,28 +1,31 @@
 -- depends_on: {{ ref('core__fact_operations') }}
 -- depends_on: {{ ref('core__fact_transactions') }}
 -- depends_on: {{ ref('core__fact_ledgers') }}
-
 {{ config(
-    materialized='incremental',
-    unique_key=['op_id'],
-    cluster_by=['block_timestamp::DATE', 'closed_at::DATE', 'type_string'],
+    materialized = 'incremental',
+    unique_key = ['op_id'],
+    cluster_by = ['block_timestamp::DATE', 'closed_at::DATE', 'type_string'],
     post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(op_source_account,asset,asset_code,asset_issuer,buying_asset_code,buying_asset_issuer,selling_asset_code,selling_asset_issuer,tx_id,transaction_hash,ledger_sequence);",
-    tags=['scheduled_core']
+    tags = ['scheduled_core']
 ) }}
 
 WITH operations AS (
+
     SELECT
-        id as op_id,
-        source_account as op_source_account,
+        id AS op_id,
+        source_account AS op_source_account,
         op_source_account_muxed,
-        account as op_account_id,
+        account AS op_account_id,
         amount,
         asset,
         asset_code,
         asset_issuer,
         asset_type,
         authorize,
-        coalesce(balance_id, claimable_balance_id) as balance_id,
+        COALESCE(
+            balance_id,
+            claimable_balance_id
+        ) AS balance_id,
         claimant,
         claimant_muxed,
         claimant_muxed_id,
@@ -48,7 +51,7 @@ WITH operations AS (
         low_threshold,
         master_key_weight,
         med_threshold,
-        name,
+        NAME,
         offer_id,
         path,
         price,
@@ -78,7 +81,7 @@ WITH operations AS (
         trustor_muxed_id,
         trustline_account_id,
         trustline_asset,
-        value,
+        VALUE,
         clear_flags,
         clear_flags_s,
         destination_min,
@@ -111,15 +114,15 @@ WITH operations AS (
         shares,
         reserve_a_withdraw_amount,
         reserve_b_withdraw_amount,
-        transaction_id as tx_id,
-        type,
+        transaction_id AS tx_id,
+        TYPE,
         type_string,
         batch_id,
         batch_run_date,
         asset_balance_changes,
-        parameters,
+        PARAMETERS,
         parameters_decoded,
-        function,
+        FUNCTION,
         address,
         soroban_operation_type,
         extend_to,
@@ -130,32 +133,33 @@ WITH operations AS (
         details_json,
         modified_timestamp,
         _inserted_timestamp
-    FROM {{ ref('core__fact_operations') }}
-    {% if is_incremental() %}
-    WHERE
-        modified_timestamp >= (
-            SELECT
-                MAX(modified_timestamp)
-            FROM
-                {{ this }}
-        )
-    {% endif %}
-),
+    FROM
+        {{ ref('core__fact_operations') }}
 
+{% if is_incremental() %}
+WHERE
+    modified_timestamp >= (
+        SELECT
+            MAX(modified_timestamp)
+        FROM
+            {{ this }}
+    )
+{% endif %}
+),
 transactions AS (
     SELECT
-        id as tx_id,
+        id AS tx_id,
         transaction_hash,
         ledger_sequence,
-        account as tx_account,
+        account AS tx_account,
         account_sequence,
         max_fee,
-        operation_count as tx_operation_count,
-        created_at as tx_created_at,
+        operation_count AS tx_operation_count,
+        created_at AS tx_created_at,
         memo_type,
         memo,
         time_bounds,
-        successful,
+        SUCCESSFUL,
         fee_charged,
         fee_account,
         new_max_fee,
@@ -181,21 +185,22 @@ transactions AS (
         rent_fee_charged,
         tx_signers,
         refundable_fee
-    FROM {{ ref('core__fact_transactions') }}
-    {% if is_incremental() %}
-    WHERE
-        modified_timestamp >= (
-            SELECT
-                MAX(modified_timestamp)
-            FROM
-                {{ this }}
-        )
-    {% endif %}
-),
+    FROM
+        {{ ref('core__fact_transactions') }}
 
+{% if is_incremental() %}
+WHERE
+    modified_timestamp >= (
+        SELECT
+            MAX(modified_timestamp)
+        FROM
+            {{ this }}
+    )
+{% endif %}
+),
 ledgers AS (
     SELECT
-        sequence as ledger_sequence,
+        SEQUENCE AS ledger_sequence,
         ledger_hash,
         previous_ledger_hash,
         transaction_count,
@@ -217,20 +222,21 @@ ledgers AS (
         total_byte_size_of_bucket_list,
         batch_id,
         batch_run_date
-    FROM {{ ref('core__fact_ledgers') }}
-    {% if is_incremental() %}
-    WHERE
-        modified_timestamp >= (
-            SELECT
-                MAX(modified_timestamp)
-            FROM
-                {{ this }}
-        )
-    AND ledger_sequence = 55184199
-    {% endif %}
-)
+    FROM
+        {{ ref('core__fact_ledgers') }}
 
-SELECT 
+{% if is_incremental() %}
+WHERE
+    modified_timestamp >= (
+        SELECT
+            MAX(modified_timestamp)
+        FROM
+            {{ this }}
+    )
+    AND ledger_sequence = 55184199
+{% endif %}
+)
+SELECT
     o.op_id,
     o.op_source_account,
     o.op_source_account_muxed,
@@ -402,10 +408,10 @@ SELECT
     t.refundable_fee,
     {{ dbt_utils.generate_surrogate_key(['op_id']) }} AS fact_operations_id,
     SYSDATE() AS inserted_timestamp,
-    SYSDATE() AS modified_timestamp,
-    '{{ invocation_id }}' AS _invocation_id
-FROM operations o
-LEFT JOIN transactions t 
-    on o.tx_id = t.tx_id
-LEFT JOIN ledgers l 
+    SYSDATE() AS modified_timestamp
+FROM
+    operations o
+    LEFT JOIN transactions t
+    ON o.tx_id = t.tx_id
+    LEFT JOIN ledgers l
     ON t.ledger_sequence = l.ledger_sequence

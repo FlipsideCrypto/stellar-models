@@ -43,8 +43,7 @@ SELECT
         ['history_operation_id','trade_order']
     ) }} AS fact_trades_id,
     SYSDATE() AS inserted_timestamp,
-    SYSDATE() AS modified_timestamp,
-    '{{ invocation_id }}' AS _invocation_id
+    SYSDATE() AS modified_timestamp
 FROM
     {{ ref('silver__trades') }}
 

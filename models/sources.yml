@@ -25,6 +25,7 @@ sources:
     schema: silver
     tables:
       - name: number_sequence
+      - name: labels_combined
   - name: github_actions
     database: STELLAR
     schema: github_actions
