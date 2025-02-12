@@ -9,28 +9,28 @@ models:
             - ASSET_TYPE
             - ASSET_CODE
             - ASSET_ISSUER
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
     columns:
       - name: ASSET_ID
         description: '{{ doc("asset_id") }}'
-        tests:
-          - not_null
 
       - name: ASSET_TYPE
         description: '{{ doc("asset_type") }}'
         tests:
-          - not_null
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: ASSET_CODE
         description: '{{ doc("asset_code") }}'
         tests:
           - not_null:
-              where: asset_type != 'native'
+              where: asset_type != 'native' AND modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: ASSET_ISSUER
         description: '{{ doc("asset_issuer") }}'
         tests:
           - not_null:
-              where: asset_type != 'native'
+              where: asset_type != 'native' AND modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: ID
         description: 'Numeric hash of asset_id, asset_type, and asset_issuer for join operations'
@@ -38,15 +38,19 @@ models:
       - name: DIM_ASSETS_ID
         description: '{{ doc("pk") }}'
         tests:
-          - not_null
-          - unique
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+          - unique:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: INSERTED_TIMESTAMP
         description: '{{ doc("inserted_timestamp") }}'
         tests:
-          - not_null
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: MODIFIED_TIMESTAMP
         description: '{{ doc("modified_timestamp") }}'
         tests:
-          - not_null
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}

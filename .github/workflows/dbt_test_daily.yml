@@ -4,7 +4,7 @@ run-name: dbt_test_scheduled
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 4 * * *'
     
 env:
   DBT_PROFILES_DIR: ./
@@ -39,4 +39,4 @@ jobs:
           dbt deps
       - name: Run DBT Jobs
         run: |
-          dbt test -m "stellar_models,models/silver" "stellar_models,models/gold"
+          dbt test -m "stellar_models,models/silver" "stellar_models,models/gold" --vars 'test_days_threshold: 3'

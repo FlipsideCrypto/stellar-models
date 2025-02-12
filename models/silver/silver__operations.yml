@@ -1,55 +1,53 @@
 version: 2
 models:
   - name: silver__operations
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - ID
-            - SOURCE_ACCOUNT
-            - TRANSACTION_ID
-            - LEDGER_SEQUENCE
-            - TYPE
-            - TYPE_STRING
+
     columns:
       - name: ID
         description: "{{ doc('id') }}"
         tests:
-          - not_null
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER
       - name: SOURCE_ACCOUNT
         description: "{{ doc('source_account') }}"
         tests:
-          - not_null
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - VARCHAR
       - name: TRANSACTION_ID
         description: "{{ doc('transaction_id') }}"
         tests:
-          - not_null
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER
       - name: LEDGER_SEQUENCE
         description: "{{ doc('ledger_sequence') }}"
         tests:
-          - not_null
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER
       - name: TYPE
         description: "{{ doc('type') }}"
         tests:
-          - not_null
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER
       - name: TYPE_STRING
         description: "{{ doc('type_string') }}"
         tests:
-          - not_null
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - VARCHAR

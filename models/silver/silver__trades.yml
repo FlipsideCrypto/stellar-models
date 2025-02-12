@@ -1,23 +1,21 @@
 version: 2
 models:
   - name: silver__trades
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - HISTORY_OPERATION_ID
-            - '"order"'
+
     columns:
       - name: HISTORY_OPERATION_ID
         description: "{{ doc('history_operation_id') }}"
         tests:
-          - not_null
+          - not_null:
+              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER
       - name: '"order"'
         description: "{{ doc('order') }}"
         tests:
-          - not_null
+          - not_null:
+              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER

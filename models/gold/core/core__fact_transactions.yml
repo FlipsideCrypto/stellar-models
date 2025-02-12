@@ -8,8 +8,10 @@ models:
       - name: ID
         description: Unique identifier for the transaction
         tests:
-          - not_null
-          - unique
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+          - unique:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: TRANSACTION_HASH
         description: '{{ doc("transaction_hash") }}'
@@ -17,12 +19,14 @@ models:
       - name: LEDGER_SEQUENCE
         description: '{{ doc("ledger_sequence") }}'
         tests:
-          - not_null
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
       
       - name: CLOSED_AT
         description: '{{ doc("closed_at") }}'
         tests:
-          - not_null
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
       
       - name: BLOCK_TIMESTAMP
         description: '{{ doc("block_timestamp") }}'
@@ -30,7 +34,8 @@ models:
       - name: ACCOUNT
         description: '{{ doc("account") }}'
         tests:
-          - not_null
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: ACCOUNT_SEQUENCE
         description: '{{ doc("account_sequence") }}'

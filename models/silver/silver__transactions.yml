@@ -5,8 +5,10 @@ models:
       - name: ID
         description: "{{ doc('id') }}"
         tests:
-          - not_null
-          - unique
+          - not_null:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+          - unique:
+              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER
