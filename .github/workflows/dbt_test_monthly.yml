@@ -1,5 +1,5 @@
-name: dbt_test_scheduled
-run-name: dbt_test_scheduled
+name: dbt_test_monthly
+run-name: dbt_test_monthly
 
 on:
   workflow_dispatch:
