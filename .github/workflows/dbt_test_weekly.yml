@@ -9,15 +9,15 @@ on:
 env:
   DBT_PROFILES_DIR: ./
   USE_VARS: "${{ vars.USE_VARS }}"
-  ACCOUNT: "${{ secrets.ACCOUNT }}"
-  ROLE: "${{ secrets.ROLE }}"
-  USER: "${{ secrets.USER }}"
-  PASSWORD: "${{ secrets.PASSWORD }}"
-  REGION: "${{ secrets.REGION }}"
-  DATABASE: "${{ secrets.DATABASE }}"
-  WAREHOUSE: "${{ secrets.WAREHOUSE }}"
-  SCHEMA: "${{ secrets.SCHEMA }}"
-
+  ACCOUNT: "${{ vars.ACCOUNT }}"
+  ROLE: "${{ vars.ROLE }}"
+  USER: "${{ vars.USER }}"
+  PASSWORD: "${{ vars.PASSWORD }}"
+  REGION: "${{ vars.REGION }}"
+  DATABASE: "${{ vars.DATABASE }}"
+  WAREHOUSE: "${{ vars.WAREHOUSE }}"
+  SCHEMA: "${{ vars.SCHEMA }}"
+  SLACK_WEBHOOK_URL: "${{ secrets.SLACK_WEBHOOK_URL }}"
 
 jobs:
   run_dbt_jobs:
@@ -40,3 +40,9 @@ jobs:
       - name: Run DBT Jobs
         run: |
           dbt test -m "stellar_models,models/silver" "stellar_models,models/gold" --vars 'test_days_threshold: 7'
+                    
+        continue-on-error: true
+
+      - name: Log test results
+        run: |
+          python python/dbt_test_alert.py

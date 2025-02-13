@@ -82,7 +82,7 @@ def create_message(**kwargs):
                         "type": "button",
                         "text": "View Warnings",
                         "style": "primary",
-                        "url": "https://github.com/FlipsideCrypto/stellar-models/actions/workflows/dbt_test_recent.yml",
+                        "url": "https://github.com/FlipsideCrypto/stellar-models/actions",
                         "confirm": {
                             "title": f"{kwargs['warn_count']} Warnings",
                             "text": "\n".join(kwargs["messages"]["warn"]) if len(kwargs["messages"]["warn"]) > 0 else "None :)",
