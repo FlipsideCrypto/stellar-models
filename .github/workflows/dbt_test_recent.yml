@@ -3,9 +3,9 @@ run-name: dbt_test_recent
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   # Daily at 8:30am UTC
-  #   - cron: '30 8 * * *'
+  schedule:
+    # run recency tests 2 hours after each BQ to SF export
+    - cron: "25 3,6,10,14,18,22 * * *"
 
 env:
   USE_VARS: "${{ vars.USE_VARS }}"
