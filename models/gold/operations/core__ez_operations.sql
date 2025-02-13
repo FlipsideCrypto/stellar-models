@@ -9,8 +9,53 @@
     tags = ['scheduled_core']
 ) }}
 
-WITH operations AS (
+{% if execute %}
 
+{% if is_incremental() %}
+{% set max_is_query %}
+
+SELECT
+    MAX(modified_timestamp) AS modified_timestamp
+FROM
+    {{ this }}
+
+    {% endset %}
+    {% set result = run_query(max_is_query) %}
+    {% set max_mod = result [0] [0] %}
+    {% set min_block_query %}
+SELECT
+    MIN(block_timestamp) AS block_timestamp
+FROM
+    (
+        SELECT
+            MIN(block_timestamp) AS block_timestamp
+        FROM
+            {{ ref('core__fact_operations') }}
+        WHERE
+            modified_timestamp >= '{{max_mod}}'
+        UNION ALL
+        SELECT
+            MIN(block_timestamp) AS block_timestamp
+        FROM
+            {{ ref('core__fact_transactions') }}
+        WHERE
+            modified_timestamp >= '{{max_mod}}'
+        UNION ALL
+        SELECT
+            MIN(block_timestamp) AS block_timestamp
+        FROM
+            {{ ref('core__fact_ledgers') }}
+        WHERE
+            modified_timestamp >= '{{max_mod}}'
+    ) {% endset %}
+    {% set min_bts = run_query(min_block_query) [0] [0] %}
+    {% if not min_bts or min_bts == 'None' %}
+        {% set min_bts = '2099-01-01 00:00:00' %}
+    {% endif %}
+{% endif %}
+{% endif %}
+
+WITH operations AS (
     SELECT
         id AS op_id,
         source_account AS op_source_account,
@@ -138,12 +183,7 @@ WITH operations AS (
 
 {% if is_incremental() %}
 WHERE
-    modified_timestamp >= (
-        SELECT
-            MAX(modified_timestamp)
-        FROM
-            {{ this }}
-    )
+    block_timestamp >= '{{min_bts}}'
 {% endif %}
 ),
 transactions AS (
@@ -190,12 +230,7 @@ transactions AS (
 
 {% if is_incremental() %}
 WHERE
-    modified_timestamp >= (
-        SELECT
-            MAX(modified_timestamp)
-        FROM
-            {{ this }}
-    )
+    block_timestamp >= '{{min_bts}}'
 {% endif %}
 ),
 ledgers AS (
@@ -227,13 +262,7 @@ ledgers AS (
 
 {% if is_incremental() %}
 WHERE
-    modified_timestamp >= (
-        SELECT
-            MAX(modified_timestamp)
-        FROM
-            {{ this }}
-    )
-    AND ledger_sequence = 55184199
+    block_timestamp >= '{{min_bts}}'
 {% endif %}
 )
 SELECT
