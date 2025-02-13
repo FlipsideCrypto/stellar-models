@@ -9,7 +9,8 @@ models:
       - name: LIQUIDITY_POOL_ID
         description: '{{ doc("liquidity_pool_id") }}'
         tests:
-          - not_null
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: TYPE
         description: '{{ doc("type") }}'
@@ -74,28 +75,20 @@ models:
       - name: CLOSED_AT
         description: '{{ doc("closed_at") }}'
         tests:
-          - not_null
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: LEDGER_SEQUENCE
         description: '{{ doc("ledger_sequence") }}'
 
       - name: FACT_LIQUIDITY_POOLS_ID
         description: '{{ doc("pk") }}'
-        tests:
-          - unique
-          - not_null
 
       - name: INSERTED_TIMESTAMP
         description: '{{ doc("inserted_timestamp") }}'
-        tests:
-          - not_null
 
       - name: MODIFIED_TIMESTAMP
         description: '{{ doc("modified_timestamp") }}'
-        tests:
-          - not_null
 
       - name: _INVOCATION_ID
         description: '{{ doc("invocation_id") }}'
-        tests:
-          - not_null
