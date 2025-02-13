@@ -9,13 +9,13 @@ models:
         description: '{{ doc("op_id") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: OP_SOURCE_ACCOUNT
         description: '{{ doc("op_source_account") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: OP_SOURCE_ACCOUNT_MUXED
         description: '{{ doc("op_source_account_muxed") }}'
@@ -312,19 +312,19 @@ models:
         description: '{{ doc("transaction_id") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: TYPE
         description: '{{ doc("type") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: TYPE_STRING
         description: '{{ doc("type_string") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: BATCH_ID
         description: '{{ doc("batch_id") }}'
@@ -372,7 +372,7 @@ models:
         description: '{{ doc("closed_at") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: BLOCK_TIMESTAMP
         description: '{{ doc("block_timestamp") }}'
@@ -384,7 +384,7 @@ models:
         description: '{{ doc("ledger_sequence") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: TX_ACCOUNT
         description: '{{ doc("tx_account") }}'

@@ -9,9 +9,9 @@ models:
         tests:
           - dbt_expectations.expect_column_to_exist
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
           - unique:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: LEDGER_HASH  
         description: '{{ doc("ledger_hash") }}'
@@ -29,7 +29,7 @@ models:
         description: '{{ doc("closed_at") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
       
       - name: BLOCK_TIMESTAMP
         description: '{{ doc("block_timestamp") }}'

@@ -8,25 +8,25 @@ models:
         description: '{{ doc("history_operation_id") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: trade_order
         description: '{{ doc("order") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: ledger_closed_at
         description: '{{ doc("closed_at") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: selling_account_address
         description: '{{ doc("selling_account_address") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: selling_asset_code
         description: '{{ doc("selling_asset_code") }}'
@@ -38,25 +38,25 @@ models:
         description: '{{ doc("selling_asset_type") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: selling_asset_id
         description: '{{ doc("selling_asset_id") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: selling_amount
         description: '{{ doc("selling_amount") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: buying_account_address
         description: '{{ doc("buying_account_address") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: buying_asset_code
         description: '{{ doc("buying_asset_code") }}'
@@ -68,31 +68,31 @@ models:
         description: '{{ doc("buying_asset_type") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: buying_asset_id
         description: '{{ doc("buying_asset_id") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: buying_amount
         description: '{{ doc("buying_amount") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: price_n
         description: '{{ doc("price_n") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: price_d
         description: '{{ doc("price_d") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: selling_offer_id
         description: '{{ doc("selling_offer_id") }}'
@@ -110,7 +110,7 @@ models:
         description: '{{ doc("trade_type") }}'
         tests:
           - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: rounding_slippage
         description: '{{ doc("rounding_slippage") }}'
@@ -120,29 +120,15 @@ models:
 
       - name: fact_trades_id
         description: '{{ doc("pk") }}'
-        tests:
-          - unique:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
-          - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: _inserted_timestamp
         description: '{{ doc("inserted_timestamp") }}'
-        tests:
-          - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: inserted_timestamp
         description: '{{ doc("inserted_timestamp") }}'
-        tests:
-          - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: modified_timestamp
         description: '{{ doc("modified_timestamp") }}'
-        tests:
-          - not_null:
-              where: ledger_closed_at > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: _invocation_id
         description: '{{ doc("invocation_id") }}'

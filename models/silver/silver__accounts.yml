@@ -7,7 +7,7 @@ models:
         description: "{{ doc('account_id') }}"
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - VARCHAR
@@ -15,7 +15,7 @@ models:
         description: "{{ doc('sequence_number') }}"
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER
@@ -23,7 +23,7 @@ models:
         description: "{{ doc('ledger_entry_change') }}"
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER
@@ -31,7 +31,7 @@ models:
         description: "{{ doc('last_modified_ledger') }}"
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
           - dbt_expectations.expect_column_values_to_be_in_type_list:
               column_type_list:
                 - NUMBER

@@ -10,13 +10,13 @@ models:
             - SEQUENCE_NUMBER
             - LEDGER_ENTRY_CHANGE
             - LAST_MODIFIED_LEDGER
-          where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+          where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
     columns:
       - name: ACCOUNT_ID
         description: "{{ doc('account_id') }}"
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: BALANCE
         description: '{{ doc("balance") }}'
@@ -31,7 +31,7 @@ models:
         description: '{{ doc("sequence_number") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: NUM_SUBENTRIES
         description: '{{ doc("num_subentries") }}'
@@ -61,19 +61,19 @@ models:
         description: '{{ doc("last_modified_ledger") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: LEDGER_ENTRY_CHANGE
         description: '{{ doc("ledger_entry_change") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: DELETED
         description: '{{ doc("deleted") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: SPONSOR
         description: '{{ doc("sponsor") }}'
@@ -88,7 +88,7 @@ models:
         description: '{{ doc("sequence_ledger") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: SEQUENCE_TIME
         description: '{{ doc("sequence_time") }}'
@@ -97,7 +97,7 @@ models:
         description: '{{ doc("closed_at") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: BLOCK_TIMESTAMP
         description: '{{ doc("block_timestamp") }}'
@@ -106,7 +106,7 @@ models:
         description: '{{ doc("ledger_sequence") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: FACT_ACCOUNTS_ID
         description: '{{ doc("pk") }}'

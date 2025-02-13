@@ -8,7 +8,7 @@ on:
     
 env:
   DBT_PROFILES_DIR: ./
-
+  USE_VARS: "${{ vars.USE_VARS }}"
   ACCOUNT: "${{ secrets.ACCOUNT }}"
   ROLE: "${{ secrets.ROLE }}"
   USER: "${{ secrets.USER }}"

@@ -10,7 +10,7 @@ models:
         description: '{{ doc("liquidity_pool_id") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: TYPE
         description: '{{ doc("type") }}'
@@ -76,7 +76,7 @@ models:
         description: '{{ doc("closed_at") }}'
         tests:
           - not_null:
-              where: closed_at > current_date - {{ var('test_days_threshold', 3) }}
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: LEDGER_SEQUENCE
         description: '{{ doc("ledger_sequence") }}'
