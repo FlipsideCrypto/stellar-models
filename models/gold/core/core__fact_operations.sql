@@ -145,8 +145,7 @@ SELECT
     _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(['id']) }} AS fact_operations_id,
     SYSDATE() AS inserted_timestamp,
-    SYSDATE() AS modified_timestamp,
-    '{{ invocation_id }}' AS _invocation_id
+    SYSDATE() AS modified_timestamp
 FROM
     {{ ref('silver__operations') }}
 
