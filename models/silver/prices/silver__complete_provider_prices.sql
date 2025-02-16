@@ -8,7 +8,7 @@
 ) }}
 
 SELECT
-    p.asset_id,
+    p.asset_id AS provider_asset_id,
     recorded_hour,
     OPEN,
     high,
