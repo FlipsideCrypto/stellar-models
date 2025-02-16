@@ -44,7 +44,7 @@ WITH pre_final AS (
         VALUE :memo_type :: STRING AS memo_type,
         VALUE :memo :: STRING AS memo,
         VALUE :time_bounds :: STRING AS time_bounds,
-        VALUE :SUCCESSFUL :: BOOLEAN AS SUCCESSFUL,
+        VALUE :"successful" :: BOOLEAN AS SUCCESSFUL,
         VALUE :fee_charged :: INTEGER AS fee_charged,
         VALUE :inner_transaction_hash :: STRING AS inner_transaction_hash,
         VALUE :fee_account :: STRING AS fee_account,
