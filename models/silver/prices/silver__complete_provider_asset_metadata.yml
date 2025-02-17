@@ -1,0 +1,27 @@
+version: 2
+models:
+  - name: silver__complete_provider_asset_metadata
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - PROVIDER_ASSET_ID
+            - ASSET_ISSUER
+            - ASSET_CODE
+            - NAME
+            - SYMBOL
+            - PLATFORM
+            - PLATFORM_ID
+            - PROVIDER
+    columns:
+      - name: PROVIDER
+        tests:
+          - not_null
+      - name: PROVIDER_ASSET_ID
+        tests:
+          - not_null
+      - name: MODIFIED_TIMESTAMP
+        tests:
+          - not_null
+      - name: COMPLETE_PROVIDER_ASSET_METADATA_ID
+        tests:
+          - unique

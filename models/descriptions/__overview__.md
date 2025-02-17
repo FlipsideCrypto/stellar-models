@@ -37,6 +37,18 @@ There is more information on how to use dbt docs in the last section of this doc
 - [defi.fact_liquidity_pools](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.defi__fact_liquidity_pools)
 - [defi.fact_trades](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.defi__fact_trades)
 
+### Price Tables (`stellar`.`PRICE`.`<table_name>`)
+
+**Dimension Tables:**
+- [price.dim_asset_metadata](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.price__dim_asset_metadata)
+
+**Fact Tables:**
+- [price.fact_prices_ohlc_hourly](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.price__fact_prices_ohlc_hourly)
+
+**Convenience Views:**
+- [price.ez_prices_hourly](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.price__ez_prices_hourly)
+- [price.ez_asset_metadata](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.price__ez_asset_metadata)
+
 ## **Data Model Overview**
 
 These Stellar models are built a few different ways, but the core fact tables are built using three layers of sql models: **bronze, silver, and gold (or core).**
