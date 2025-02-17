@@ -4,7 +4,7 @@
     merge_exclude_columns = ["inserted_timestamp"],
     unique_key = 'ez_prices_hourly_id',
     cluster_by = ['hour::DATE'],
-    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(asset_issuer, asset_code, asset_id, symbol, name)",
+    post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(asset_issuer, asset_code, asset_id, symbol)",
     tags = ['gold_prices','scheduled_core']
 ) }}
 
@@ -40,7 +40,7 @@ WHERE
             NULL AS asset_issuer,
             NULL AS asset_code,
             -5706705804583548011 AS asset_id,
-            NAME,
+            price,
             symbol,
             decimals,
             blockchain,
