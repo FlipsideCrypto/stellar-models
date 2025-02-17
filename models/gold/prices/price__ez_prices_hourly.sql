@@ -13,7 +13,7 @@ SELECT
     asset_issuer,
     asset_code,
     asset_id,
-    NAME,
+    price,
     symbol,
     decimals,
     blockchain,

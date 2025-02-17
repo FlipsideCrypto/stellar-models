@@ -102,3 +102,4 @@ FROM
     b2
     ON A.asset_issuer = b2.asset_issuer
     AND A.symbol = b.asset_code
+    AND b.asset_id IS NULL

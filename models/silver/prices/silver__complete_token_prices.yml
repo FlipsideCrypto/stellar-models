@@ -5,14 +5,17 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - HOUR
-            - TOKEN_ADDRESS
-            - BLOCKCHAIN
+            - ASSET_ISSUER
+            - ASSET_CODE
 
     columns:
       - name: HOUR
         tests:
           - not_null
-      - name: TOKEN_ADDRESS
+      - name: ASSET_ISSUER
+        tests:
+          - not_null
+      - name: ASSET_CODE
         tests:
           - not_null
       - name: BLOCKCHAIN
@@ -37,5 +40,3 @@ models:
         tests:
           - not_null
       - name: COMPLETE_TOKEN_PRICES_ID
-        tests:
-          - unique

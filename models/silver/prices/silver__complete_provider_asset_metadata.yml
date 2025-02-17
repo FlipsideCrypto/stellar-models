@@ -4,8 +4,9 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - ASSET_ID
-            - TOKEN_ADDRESS
+            - PROVIDER_ASSET_ID
+            - ASSET_ISSUER
+            - ASSET_CODE
             - NAME
             - SYMBOL
             - PLATFORM
@@ -15,7 +16,7 @@ models:
       - name: PROVIDER
         tests:
           - not_null
-      - name: ASSET_ID
+      - name: PROVIDER_ASSET_ID
         tests:
           - not_null
       - name: MODIFIED_TIMESTAMP

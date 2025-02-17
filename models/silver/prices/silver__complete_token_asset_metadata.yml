@@ -4,14 +4,18 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - TOKEN_ADDRESS
+            - ASSET_ISSUER
+            - ASSET_CODE
             - BLOCKCHAIN
           
     columns:
       - name: PROVIDER
         tests:
           - not_null
-      - name: TOKEN_ADDRESS
+      - name: ASSET_ISSUER
+        tests:
+          - not_null
+      - name: ASSET_CODE
         tests:
           - not_null
       - name: BLOCKCHAIN
