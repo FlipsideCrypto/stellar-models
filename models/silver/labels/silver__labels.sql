@@ -1,8 +1,7 @@
 {{ config(
     materialized = 'view',
-    tags = ['scheduled_core']
+    tags = ['scheduled_daily']
 ) }}
-{# TODO move to non core when available #}
 
 SELECT
     blockchain,
