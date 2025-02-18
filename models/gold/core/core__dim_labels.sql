@@ -4,7 +4,7 @@
     incremental_strategy = 'merge',
     merge_exclude_columns = ["inserted_timestamp"],
     post_hook = ["ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(address)", "DELETE FROM {{ this }} WHERE address in (select address from {{ ref('silver__labels') }} where _is_deleted = TRUE);",],
-    tags = ['scheduled_core']
+    tags = ['scheduled_daily']
 ) }}
 
 SELECT
