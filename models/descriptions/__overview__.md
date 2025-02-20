@@ -24,6 +24,7 @@ There is more information on how to use dbt docs in the last section of this doc
 
 **Fact Tables:**
 - [core.fact_accounts](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__fact_accounts)
+- [core.fact_contract_events](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__fact_contract_events)
 - [core.fact_ledgers](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__fact_ledgers)
 - [core.fact_operations](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__fact_operations)
 - [core.fact_transactions](https://flipsidecrypto.github.io/stellar-models/#!/model/model.stellar_models.core__fact_transactions)

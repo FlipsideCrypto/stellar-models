@@ -1,0 +1,13 @@
+version: 2
+models:
+  - name: silver__contract_events
+    columns:
+      - name: transaction_hash
+        description: "{{ doc('transaction_hash') }}"
+        tests:
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+          - dbt_expectations.expect_column_values_to_be_in_type_list:
+              column_type_list:
+                - STRING
+                - VARCHAR

@@ -142,7 +142,6 @@ SELECT
     trustline_account_id,
     trustor_muxed,
     trustor_muxed_id,
-    _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(['id']) }} AS fact_operations_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp

@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: core__fact_contract_events
+    description: Fact table containing contract event details from the Stellar network.
+    columns:
+
+      - name: TRANSACTION_HASH
+        description: '{{ doc("transaction_hash") }}'
+        tests:
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+   
+      - name: TRANSACTION_ID
+        description: '{{ doc("transaction_id") }}'
+
+      - name: CLOSED_AT
+        description: '{{ doc("closed_at") }}'
+        tests:
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+      
+      - name: BLOCK_TIMESTAMP
+        description: '{{ doc("block_timestamp") }}'
+
+      - name: LEDGER_SEQUENCE
+        description: '{{ doc("ledger_sequence") }}'
+        tests:
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: SUCCESSFUL
+        description: '{{ doc("successful") }}'
+        tests:
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: IN_SUCCESSFUL_CONTRACT_CALL
+        description: '{{ doc("in_successful_contract_call") }}'
+
+      - name: CONTRACT_ID
+        description: '{{ doc("contract_id") }}'
+
+      - name: TYPE
+        description: 'The contract event type id'
+
+      - name: TYPE_STRING
+        description: 'The contract event type value'
+
+      - name: TOPICS
+        description: 'The raw event topics'
+
+      - name: TOPICS_DECODED
+        description: "The decoded event topics"
+
+      - name: DATA
+        description: 'The raw event data'
+
+      - name: DATA_DECODED
+        description: 'The decoded event data'
+
+      - name: contract_event_xdr
+        description: 'The raw contract event xdr' 
+
+      - name: fact_contract_events_id
+        description: '{{ doc("pk") }}'
+
+      - name: INSERTED_TIMESTAMP
+        description: '{{ doc("inserted_timestamp") }}'
+
+      - name: MODIFIED_TIMESTAMP
+        description: '{{ doc("modified_timestamp") }}'
+
+      - name: _INVOCATION_ID
+        description: '{{ doc("invocation_id") }}'
