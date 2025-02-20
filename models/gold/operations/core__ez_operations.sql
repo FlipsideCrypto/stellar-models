@@ -176,8 +176,7 @@ WITH operations AS (
         operation_result_code,
         operation_trace_code,
         details_json,
-        modified_timestamp,
-        _inserted_timestamp
+        modified_timestamp
     FROM
         {{ ref('core__fact_operations') }}
 

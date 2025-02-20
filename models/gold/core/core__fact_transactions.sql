@@ -55,7 +55,6 @@ SELECT
     rent_fee_charged,
     tx_signers,
     refundable_fee,
-    _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
         ['id']
     ) }} AS fact_transactions_id,

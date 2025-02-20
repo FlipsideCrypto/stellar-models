@@ -38,7 +38,6 @@ SELECT
     trade_type,
     rounding_slippage,
     seller_is_exact,
-    _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
         ['history_operation_id','trade_order']
     ) }} AS fact_trades_id,

@@ -34,7 +34,6 @@ SELECT
     batch_run_date,
     batch_insert_ts,
     ledger_sequence,
-    _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
         ['liquidity_pool_id', 'closed_at']
     ) }} AS fact_liquidity_pools_id,

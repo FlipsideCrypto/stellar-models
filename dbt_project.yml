@@ -98,15 +98,15 @@ vars:
         - INTERNAL_DEV
 
     prod:
-      API_INTEGRATION:  
-      EXTERNAL_FUNCTION_URI: 
+      API_INTEGRATION: aws_stellar_api_prod_v2
+      EXTERNAL_FUNCTION_URI: qavdasgp43.execute-api.us-east-1.amazonaws.com/prod/
       ROLES:
         - AWS_LAMBDA_STELLAR_API
         - INTERNAL_DEV
         - DBT_CLOUD_STELLAR
     prod-2xl:
-      API_INTEGRATION: 
-      EXTERNAL_FUNCTION_URI:  
+      API_INTEGRATION: aws_stellar_api_prod_v2
+      EXTERNAL_FUNCTION_URI: qavdasgp43.execute-api.us-east-1.amazonaws.com/prod/
       ROLES:
         - AWS_LAMBDA_STELLAR_API
         - INTERNAL_DEV
