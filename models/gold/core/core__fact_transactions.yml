@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: core__fact_transactions
-    description: Fact table containing transaction details from the Stellar network.
+    description: "{{ doc('core__fact_transactions') }}"
     columns:
 
       - name: ID
