@@ -4,7 +4,7 @@
 ) }}
 
 SELECT
-    _id AS ledger_sequence
+    _id AS SEQUENCE
 FROM
     {{ source(
         'crosschain_silver',
@@ -13,13 +13,13 @@ FROM
 WHERE
     _id >= (
         SELECT
-            MIN(tail_ledger_sequence)
+            MIN(tail_sequence)
         FROM
             {{ ref('streamline__chain_head_tail') }}
     )
     AND _id <= (
         SELECT
-            MAX(head_ledger_sequence)
+            MAX(head_sequence)
         FROM
             {{ ref('streamline__chain_head_tail') }}
     )
