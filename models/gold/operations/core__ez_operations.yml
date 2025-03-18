@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: core__ez_operations
-    description: A comprehensive view combining operations with their associated transaction and ledger data.
+    description: "{{ doc('core__ez_operations') }}"
     columns:
 
       - name: OP_ID

@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: core__fact_operations
-    description: A comprehensive view of all operations executed on the Stellar network, including transaction details, operation types, and their outcomes.
+    description: "{{ doc('core__fact_operations') }}"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

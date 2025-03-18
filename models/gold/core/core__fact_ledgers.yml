@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: core__fact_ledgers
-    description: Fact table containing information about ledgers on the Stellar network.
+    description: "{{ doc('core__fact_ledgers') }}"
     columns:
       - name: SEQUENCE
         description: '{{ doc("sequence") }}'

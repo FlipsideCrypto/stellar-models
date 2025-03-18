@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: core__dim_assets
-    description: Dimension table containing information about assets on the network.
+    description: "{{ doc('core__dim_assets') }}"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
