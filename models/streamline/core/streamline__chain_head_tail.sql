@@ -9,11 +9,14 @@ WITH head AS (
         {{ target.database }}.live.udf_api(
             'GET',
             '{Service}/{Authentication}/ledgers?limit=1&order=desc',
-            OBJECT_CONSTRUCT(),
+            OBJECT_CONSTRUCT(
+                'fsc-quantum-state',
+                'livequery'
+            ),
             OBJECT_CONSTRUCT(),
             'Vault/prod/stellar/quicknode/mainnet'
         ) :data :_embedded :records [0] AS DATA,
-        DATA :sequence :: INT AS ledger_sequence,
+        DATA :sequence :: INT AS SEQUENCE,
         DATA :closed_at :: datetime AS block_timestamp
 ),
 tail AS (
@@ -21,17 +24,20 @@ tail AS (
         {{ target.database }}.live.udf_api(
             'GET',
             '{Service}/{Authentication}/ledgers?limit=1&order=asc',
-            OBJECT_CONSTRUCT(),
+            OBJECT_CONSTRUCT(
+                'fsc-quantum-state',
+                'livequery'
+            ),
             OBJECT_CONSTRUCT(),
             'Vault/prod/stellar/quicknode/mainnet'
         ) :data :_embedded :records [0] AS DATA,
-        DATA :sequence :: INT AS ledger_sequence,
+        DATA :sequence :: INT AS SEQUENCE,
         DATA :closed_at :: datetime AS block_timestamp
 )
 SELECT
-    A.ledger_sequence AS head_ledger_sequence,
+    A.sequence AS head_sequence,
     A.block_timestamp AS head_block_timestamp,
-    b.ledger_sequence AS tail_ledger_sequence,
+    b.sequence AS tail_sequence,
     b.block_timestamp AS tail_block_timestamp
 FROM
     head A
