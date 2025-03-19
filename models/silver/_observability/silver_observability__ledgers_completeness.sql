@@ -94,7 +94,7 @@ SELECT
     MAX(
         b.block_timestamp
     ) AS max_block_timestamp,
-    COUNT(1) AS sequences_tested,
+    COUNT(1) AS ledgers_tested,
     COUNT(
         CASE
             WHEN C.sequence IS NOT NULL THEN A.sequence

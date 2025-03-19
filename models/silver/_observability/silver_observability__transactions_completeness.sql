@@ -20,9 +20,9 @@ WITH summary_stats AS (
 
 {% if is_incremental() %}
 AND (
-    block_number >= (
+    SEQUENCE >= (
         SELECT
-            MIN(block_number)
+            MIN(SEQUENCE)
         FROM
             (
                 SELECT

@@ -118,7 +118,7 @@ SELECT
     MAX(
         block_timestamp
     ) AS max_block_timestamp,
-    COUNT(1) AS sequences_tested,
+    COUNT(1) AS ledgers_tested,
     COUNT(
         CASE
             WHEN bq.successful_transaction_count <> rpc.successful_transaction_count

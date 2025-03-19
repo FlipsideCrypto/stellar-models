@@ -1,7 +1,11 @@
 version: 2
 models:
-  - name: silver_observability__transactions_completeness
-    description: Records of all block transaction counts.  
+  - name: silver_observability__ledgers_xref_completeness
+    description: Records of all blocks ledger differences between hubble and rpc
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - TEST_TIMESTAMP
     columns:
       - name: MIN_SEQUENCE
         description: The lowest block id in the test
