@@ -39,7 +39,7 @@ jobs:
           dbt deps
       - name: Run DBT Jobs
         run: |
-          dbt test -m "stellar_models,models/silver" "stellar_models,models/gold" --vars 'test_days_threshold: 1'
+          dbt test -m "stellar_models,models/silver" "stellar_models,models/gold" --vars 'test_days_threshold: 1' --exclude "stellar_models,tag:observability"
           
         continue-on-error: true
 

@@ -17,7 +17,7 @@ WITH ledgers AS (
     SELECT
         SEQUENCE
     FROM
-        {{ ref("streamline__legders") }}
+        {{ ref("streamline__ledgers") }}
     EXCEPT
     SELECT
         SEQUENCE
