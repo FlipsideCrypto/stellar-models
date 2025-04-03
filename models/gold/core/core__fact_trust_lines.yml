@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: core__fact_trust_lines
+    description: "{{ doc('core__fact_trust_lines') }}"
+    columns:
+
+
+      - name: account_id
+        description: "{{ doc('account_id') }}"
+      - name: closed_at
+        description: "{{ doc('closed_at') }}"
+      - name: block_timestamp
+        description: "{{ doc('block_timestamp') }}"
+      - name: asset_id
+        description: "{{ doc('asset_id') }}"
+      - name: asset_type
+        description: "{{ doc('asset_type') }}"
+      - name: asset_issuer
+        description: "{{ doc('asset_issuer') }}"
+      - name: asset_code
+        description: "{{ doc('asset_code') }}"
+      - name: liquidity_pool_id
+        description: "{{ doc('liquidity_pool_id') }}"
+      - name: balance
+        description: "{{ doc('balance') }}"
+      - name: trust_line_limit
+        description: "{{ doc('trust_line_limit') }}"
+      - name: buying_liabilities
+        description: "{{ doc('buying_liabilities') }}"
+      - name: selling_liabilities
+        description: "{{ doc('selling_liabilities') }}"
+      - name: flags
+        description: "{{ doc('flags') }}"
+      - name: last_modified_ledger
+        description: "{{ doc('last_modified_ledger') }}"
+      - name: ledger_entry_change
+        description: "{{ doc('ledger_entry_change') }}"
+      - name: deleted
+        description: "{{ doc('deleted') }}"
+      - name: ledger_sequence
+        description: "{{ doc('ledger_sequence') }}"
+      - name: ledger_key
+        description: "{{ doc('ledger_key') }}"
+      - name: sponsor
+        description: "{{ doc('sponsor') }}"
+      - name: batch_id
+        description: "{{ doc('batch_id') }}"
+      - name: batch_run_date
+        description: "{{ doc('batch_run_date') }}"
+      - name: batch_insert_ts
+        description: "{{ doc('batch_insert_ts') }}"
+      - name: fact_trust_lines_id
+        description: "{{ doc('pk') }}"
+        tests:
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+          - unique:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+      - name: inserted_timestamp
+        description: "{{ doc('inserted_timestamp') }}"
+      - name: modified_timestamp
+        description: "{{ doc('modified_timestamp') }}"
+
