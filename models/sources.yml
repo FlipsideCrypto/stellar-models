@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: bronze_streamline
     database: streamline
-    schema: stellar
+    schema: "{{ 'stellar' if target.database == 'STELLAR' else 'stellar_dev' }}" 
     tables:
       - name: accounts
       - name: contract_data
@@ -14,6 +14,7 @@ sources:
       - name: history_trades
       - name: history_transactions
       - name: liquidity_pools
+      - name: streamline_ledgers
       - name: trust_lines
   - name: crosschain
     database: "{{ 'crosschain' if target.database == 'STELLAR' else 'crosschain_dev' }}"

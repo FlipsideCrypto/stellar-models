@@ -1,14 +1,15 @@
-name: dbt_test_daily
-run-name: dbt_test_daily
+name: dbt_run_observability_full
+run-name: dbt_run_observability_full
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 4 * * *'
+    # Runs “At 19:00 on day-of-month 1.” (see https://crontab.guru)
+    - cron: '0 19 1 * *'
     
 env:
   DBT_PROFILES_DIR: ./
-  USE_VARS: "${{ vars.USE_VARS }}"
+
   ACCOUNT: "${{ vars.ACCOUNT }}"
   ROLE: "${{ vars.ROLE }}"
   USER: "${{ vars.USER }}"
@@ -17,7 +18,9 @@ env:
   DATABASE: "${{ vars.DATABASE }}"
   WAREHOUSE: "${{ vars.WAREHOUSE }}"
   SCHEMA: "${{ vars.SCHEMA }}"
-  SLACK_WEBHOOK_URL: "${{ secrets.SLACK_WEBHOOK_URL }}"
+
+concurrency:
+  group: ${{ github.workflow }}
 
 jobs:
   run_dbt_jobs:
@@ -30,7 +33,7 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.10.x"
+          python-version: "${{ vars.PYTHON_VERSION }}"
           cache: "pip"
 
       - name: install dependencies
@@ -39,10 +42,4 @@ jobs:
           dbt deps
       - name: Run DBT Jobs
         run: |
-          dbt test -m "stellar_models,models/silver" "stellar_models,models/gold" --vars 'test_days_threshold: 1' --exclude "stellar_models,tag:observability"
-          
-        continue-on-error: true
-
-      - name: Log test results
-        run: |
-          python python/dbt_test_alert.py
+          dbt build --vars '{"OBSERV_FULL_TEST":True}' -s "stellar_models,tag:observability"
