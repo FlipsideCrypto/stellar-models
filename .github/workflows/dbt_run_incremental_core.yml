@@ -44,4 +44,7 @@ jobs:
       - name: Run DBT Jobs
         run: |
           dbt run -m "stellar_models,tag:scheduled_core"
+      - name: Run streamline (for observability only)
+        run: |
+          dbt run -m 2+models/streamline/core/realtime/streamline__ledgers_realtime.sql --vars '{STREAMLINE_INVOKE_STREAMS: True}'
           
