@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: core__fact_contract_events
-    description: Fact table containing contract event details from the Stellar network.
+    description: "{{ doc('core__fact_contract_events') }}"
     columns:
 
       - name: TRANSACTION_HASH

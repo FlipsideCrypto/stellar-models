@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: core__fact_accounts
-    description: Core fact table containing all Stellar account information and their current states
+    description: "{{ doc('core__fact_accounts') }}"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
