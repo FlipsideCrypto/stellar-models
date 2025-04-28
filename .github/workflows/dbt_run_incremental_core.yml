@@ -4,9 +4,9 @@ run-name: dbt_run_incremental_core
 on:
   workflow_dispatch:
   schedule:
-    # run 25 minutes past the hour, every 4 hours except for 1:25 to get the full previous day
+    # run 25 minutes past the hour, every hour except for 1:25 to get the full previous day
         # BQ to SF export runs at 5 after the hour on the same hourly schedule
-    - cron: "25 1,4,8,12,16,20 * * *"
+    - cron: "25 * * * *"
     
 env:
   DBT_PROFILES_DIR: "${{ vars.DBT_PROFILES_DIR }}"
