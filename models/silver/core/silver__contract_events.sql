@@ -74,8 +74,8 @@ WITH pre_final AS (
 
 {% if is_incremental() %}
 WHERE
-    partition_gte_id >= '2025-05-01'
-    AND _inserted_timestamp > '2025-05-18'
+    partition_gte_id >= '{{ max_part }}'
+    AND _inserted_timestamp > '{{ max_is }}'
 {% endif %}
 
 qualify ROW_NUMBER() over (
