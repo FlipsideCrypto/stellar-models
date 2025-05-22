@@ -24,9 +24,7 @@ SELECT
     DATA,
     data_decoded,
     contract_event_xdr,
-    {{ dbt_utils.generate_surrogate_key(
-        ['transaction_hash','_event_order']
-    ) }} AS fact_contract_events_id,
+    contract_events_id AS fact_contract_events_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp
 FROM

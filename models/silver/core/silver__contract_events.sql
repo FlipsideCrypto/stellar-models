@@ -74,13 +74,13 @@ WITH pre_final AS (
 
 {% if is_incremental() %}
 WHERE
-    partition_gte_id >= '{{ max_part }}'
-    AND _inserted_timestamp > '{{ max_is }}'
+    partition_gte_id >= '2025-05-01'
+    AND _inserted_timestamp > '2025-05-18'
 {% endif %}
 
-{# this is intentionally a rank and not a row_num due to no true PK on the table #}
-qualify RANK() over (
-    PARTITION BY transaction_hash
+qualify ROW_NUMBER() over (
+    PARTITION BY transaction_hash,
+    contract_event_XDR
     ORDER BY
         batch_insert_ts DESC,
         _inserted_timestamp DESC
@@ -106,15 +106,9 @@ SELECT
     batch_id,
     batch_run_date,
     batch_insert_ts,
-    -- this isn't the order they were executed in but just a random rank to get a PK
-    ROW_NUMBER() over (
-        PARTITION BY transaction_hash
-        ORDER BY
-            SYSDATE()
-    ) AS _event_order,
     _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
-        ['transaction_hash','_event_order']
+        ['transaction_hash','contract_event_xdr']
     ) }} AS contract_events_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
