@@ -18,6 +18,10 @@ SELECT
     decimals,
     blockchain,
     FALSE AS is_native,
+    COALESCE(
+        is_verified,
+        FALSE
+    ) AS is_verified,
     is_imputed,
     is_deprecated,
     {{ dbt_utils.generate_surrogate_key(['complete_token_prices_id']) }} AS ez_prices_hourly_id,
@@ -45,6 +49,7 @@ WHERE
             decimals,
             blockchain,
             TRUE AS is_native,
+            TRUE AS is_verified,
             is_imputed,
             is_deprecated,
             {{ dbt_utils.generate_surrogate_key(['complete_native_prices_id']) }} AS ez_prices_hourly_id,

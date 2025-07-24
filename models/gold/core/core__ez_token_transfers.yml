@@ -1,0 +1,108 @@
+version: 2
+
+models:
+  - name: core__ez_token_transfers
+    description: "{{ doc('core__ez_token_transfers') }}"
+    columns:
+
+      - name: transaction_hash
+        description: A hex-encoded SHA-256 hash of this transaction's XDR-encoded form.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: transaction_id
+        description: A unique identifier for this transaction.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: operation_id
+        description: A unique identifier for this transaction.
+
+      - name: event_topic
+        description: The action type applied to the token.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: from
+        description: The source address for the token transfer event amount.
+
+      - name: to
+        description: The destination address for the token transfer event amount.
+
+      - name: asset
+        description: ID field for the asset code/issuer pair. Its created by concatenating the asset code, ':' and asset_issuer fields.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: asset_type
+        description: The identifier for type of asset code, can be an alphanumeric with 4 characters, 12 characters or the native asset to the network, XLM.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: asset_code
+        description: The 4 or 12 character code representation of the asset on the network.
+
+      - name: asset_issuer
+        description: The account address of the original asset issuer that created the asset.
+
+      - name: amount
+        description: The normalized float amount of the asset. Raw amount of asset divided by 0.0000001.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: amount_raw
+        description: The raw stroop amount of the asset.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: token_is_verified
+        description: A flag indicating if the asset has been verified by the Flipside team.
+
+      - name: contract_id
+        description: Soroban contract id.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: ledger_sequence
+        description: The sequence number of this ledger. It represents the order of the ledger within the Stellar blockchain. Each ledger has a unique sequence number that increments with every new ledger, ensuring that ledgers are processed in the correct order.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: closed_at
+        description: Timestamp in UTC when this ledger closed and committed to the network. Ledgers are expected to close ~every 5 seconds.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: to_muxed
+        description: The multiplexed strkey representation of the `to` address.
+
+      - name: to_muxed_id
+        description: The multiplexed ID used to generate the multiplexed strkey representation of the `to` address.
+
+      - name: batch_id
+        description: String representation of the run id for a given DAG in Airflow. Takes the form of "scheduled__<batch_end_date>-<dag_alias>". Batch ids are unique to the batch and help with monitoring and rerun capabilities.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: batch_run_date
+        description: The start date for the batch interval. When taken with the date in the batch_id, the date represents the interval of ledgers processed. The batch run date can be seen as a proxy of closed_at for a ledger.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
+
+      - name: batch_insert_ts
+        description: The timestamp in UTC when a batch of records was inserted into the database. This field can help identify if a batch executed in real time or as part of a backfill. The timestamp should not be used during ad hoc analysis and is useful for data engineering purposes.
+        tests:
+          - not_null:
+              where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}

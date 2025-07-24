@@ -43,6 +43,7 @@ WITH providers AS (
         is_deprecated,
         provider,
         source,
+        is_verified,
         _inserted_timestamp
     FROM
         {{ ref(
@@ -87,6 +88,7 @@ SELECT
     A.is_deprecated,
     A.provider,
     A.source,
+    A.is_verified,
     A._inserted_timestamp,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
