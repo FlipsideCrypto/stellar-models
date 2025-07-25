@@ -21,6 +21,7 @@ SELECT
     {{ unique_key }},
     {{ other_cols }},
     value,
+    file_name,
     _inserted_timestamp,
     s.{{ partition_name }} 
 FROM
@@ -61,6 +62,7 @@ SELECT
     {{ unique_key }},
     {{ other_cols }},
     value,
+    file_name,
     _inserted_timestamp,
     s.{{ partition_name }}
 FROM

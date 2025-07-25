@@ -1,4 +1,4 @@
--- depends_on: {{ ref('bronze__trust_lines') }}
+-- depends_on: {{ ref('bronze__token_transfers') }}
 {{ config(
     materialized = 'incremental',
     unique_key = "token_transfers_id",
@@ -59,7 +59,22 @@ WITH pre_final AS (
             VALUE :batch_insert_ts :: INT,
             6
         ) AS batch_insert_ts,
-        _inserted_timestamp
+        _inserted_timestamp,
+        ROW_NUMBER() over(
+            PARTITION BY transaction_hash,
+            COALESCE(
+                operation_id,
+                0
+            ),
+            to_address,
+            from_address,
+            asset,
+            amount_raw,
+            event_topic,
+            file_name
+            ORDER BY
+                _inserted_timestamp DESC
+        ) AS artificial_uk
     FROM
 
 {% if is_incremental() %}
@@ -67,16 +82,16 @@ WITH pre_final AS (
 {% else %}
     {{ ref('bronze__token_transfers_FR') }}
 {% endif %}
-WHERE
-    partition_gte_id = '2024-01-01'
 
 {% if is_incremental() %}
+{# WHERE
+partition_gte_id >= '{{ max_part }}'
+AND _inserted_timestamp > '{{ max_is }}' #}
 WHERE
-    partition_gte_id >= '{{ max_part }}'
-    AND _inserted_timestamp > '{{ max_is }}'
+    partition_id = '2024-01-01'
 {% endif %}
 
-qualify ROW_NUMBER() over (
+qualify DENSE_RANK() over(
     PARTITION BY transaction_hash,
     COALESCE(
         operation_id,
@@ -85,9 +100,9 @@ qualify ROW_NUMBER() over (
     to_address,
     from_address,
     asset,
-    amount_raw
+    amount_raw,
+    event_topic
     ORDER BY
-        batch_insert_ts DESC,
         _inserted_timestamp DESC
 ) = 1
 )
@@ -116,7 +131,7 @@ SELECT
     batch_insert_ts,
     _inserted_timestamp,
     {{ dbt_utils.generate_surrogate_key(
-        ['transaction_hash', 'operation_id', 'to_address', 'from_address', 'asset', 'amount_raw']
+        ['transaction_hash', 'operation_id', 'to_address', 'from_address', 'asset', 'amount_raw','event_topic','artificial_uk']
     ) }} AS token_transfers_id,
     SYSDATE() AS inserted_timestamp,
     SYSDATE() AS modified_timestamp,
