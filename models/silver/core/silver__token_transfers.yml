@@ -1,0 +1,11 @@
+version: 2
+models:
+  - name: silver__token_transfers
+    columns:
+      - name: token_transfers_id
+        description: "{{ doc('id') }}"
+        tests:
+          - not_null:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}
+          - unique:
+              where: modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}

@@ -17,6 +17,10 @@ SELECT
     decimals,
     blockchain,
     FALSE AS is_native,
+    COALESCE(
+        is_verified,
+        FALSE
+    ) AS is_verified,
     is_deprecated,
     {{ dbt_utils.generate_surrogate_key(['complete_token_asset_metadata_id']) }} AS ez_asset_metadata_id,
     SYSDATE() AS inserted_timestamp,
@@ -44,6 +48,7 @@ WHERE
             blockchain,
             TRUE AS is_native,
             is_deprecated,
+            TRUE AS is_verified,
             {{ dbt_utils.generate_surrogate_key(['complete_native_asset_metadata_id']) }} AS ez_asset_metadata_id,
             SYSDATE() AS inserted_timestamp,
             SYSDATE() AS modified_timestamp

@@ -18,6 +18,7 @@ SELECT
     is_deprecated,
     provider,
     source,
+    is_verified,
     _inserted_timestamp,
     inserted_timestamp,
     modified_timestamp,
