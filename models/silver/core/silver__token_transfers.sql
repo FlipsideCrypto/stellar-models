@@ -84,11 +84,9 @@ WITH pre_final AS (
 {% endif %}
 
 {% if is_incremental() %}
-{# WHERE
-partition_gte_id >= '{{ max_part }}'
-AND _inserted_timestamp > '{{ max_is }}' #}
 WHERE
-    partition_id = '2024-01-01'
+    partition_gte_id >= '{{ max_part }}'
+    AND _inserted_timestamp > '{{ max_is }}'
 {% endif %}
 
 qualify DENSE_RANK() over(
