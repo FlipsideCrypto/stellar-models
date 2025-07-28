@@ -70,8 +70,7 @@ WITH pre_final AS (
             from_address,
             asset,
             amount_raw,
-            event_topic,
-            file_name
+            event_topic
             ORDER BY
                 _inserted_timestamp DESC
         ) AS artificial_uk
