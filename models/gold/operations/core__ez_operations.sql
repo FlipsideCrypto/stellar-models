@@ -178,7 +178,8 @@ WITH operations AS (
         operation_result_code,
         operation_trace_code,
         details_json,
-        modified_timestamp
+        modified_timestamp,
+        ledger_sequence
     FROM
         {{ ref('core__fact_operations') }}
 
@@ -386,7 +387,7 @@ SELECT
     o.closed_at,
     o.block_timestamp,
     t.transaction_hash,
-    t.ledger_sequence,
+    o.ledger_sequence,
     t.tx_account,
     t.account_sequence,
     t.max_fee,
