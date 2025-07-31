@@ -10,23 +10,31 @@ WITH providers AS (
 
     SELECT
         asset_id AS provider_asset_id,
+        SPLIT_PART(
+            token_address,
+            '-',
+            1
+        ) seg1,
+        SPLIT_PART(
+            token_address,
+            '-',
+            2
+        ) seg2,
         UPPER(
             CASE
                 WHEN len(TRIM(token_address)) = 56 THEN token_address
-                ELSE SPLIT_PART(
-                    token_address,
-                    '-',
-                    2
-                )
+                WHEN token_address ILIKE '%-%'
+                AND len(seg1) > len(seg2) THEN seg1
+                WHEN token_address ILIKE '%-%'
+                AND len(seg2) > len(seg1) THEN seg2
             END
         ) AS asset_issuer,
         UPPER(
             CASE
-                WHEN token_address LIKE '%-%' THEN SPLIT_PART(
-                    token_address,
-                    '-',
-                    1
-                )
+                WHEN token_address ILIKE '%-%'
+                AND len(seg1) > len(seg2) THEN seg2
+                WHEN token_address ILIKE '%-%'
+                AND len(seg2) > len(seg1) THEN seg1
                 ELSE symbol
             END
         ) AS asset_code,
