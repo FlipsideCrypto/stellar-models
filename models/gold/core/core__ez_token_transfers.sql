@@ -1,4 +1,4 @@
--- depends_on: {{ ref('silver__transactions') }}
+-- depends_on: {{ ref('silver__token_transfers') }}
 {{ config(
     materialized = 'incremental',
     unique_key = ["ez_token_transfers_id"],
