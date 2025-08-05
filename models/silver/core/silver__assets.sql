@@ -1,7 +1,7 @@
 -- depends_on: {{ ref('bronze__assets') }}
 {{ config(
     materialized = 'incremental',
-    unique_key = "asset_id",
+    unique_key = ["asset_issuer","asset_code"],
     incremental_predicates = ["dynamic_range_predicate", "partition_id::date"],
     merge_exclude_columns = ["inserted_timestamp"],
     cluster_by = ['partition_id','modified_timestamp::DATE'],
@@ -60,7 +60,8 @@ WHERE
 {% endif %}
 
 qualify ROW_NUMBER() over (
-    PARTITION BY asset_id
+    PARTITION BY asset_issuer,
+    asset_code
     ORDER BY
         batch_insert_ts DESC,
         _inserted_timestamp DESC

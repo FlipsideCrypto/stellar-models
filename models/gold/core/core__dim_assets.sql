@@ -1,7 +1,7 @@
 -- depends_on: {{ ref('silver__assets') }}
 {{ config(
     materialized = 'incremental',
-    unique_key = ['asset_id'],
+    unique_key = ["asset_issuer","asset_code"],
     incremental_strategy = 'merge',
     merge_exclude_columns = ['inserted_timestamp'],
     post_hook = "ALTER TABLE {{ this }} ADD SEARCH OPTIMIZATION ON EQUALITY(asset_code,asset_issuer,asset_id);",
