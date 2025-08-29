@@ -27,12 +27,7 @@ AND balance_date >= (
         {{ this }}
 )
 {% else %}
-    AND balance_date >= (
-        SELECT
-            MIN(DATE_TRUNC('day', closed_at))
-        FROM
-            stellar.core.fact_trust_lines
-    )
+    AND balance_date >= '2024-01-01'
 {% endif %}
 ),
 
@@ -75,12 +70,12 @@ source_data AS (
                 account_id,
                 closed_at,
                 closed_at :: DATE AS snapshot_date,
-                LOWER(asset_issuer) AS asset_issuer,
-                LOWER(asset_code) AS asset_code,
+                asset_issuer,
+                asset_code,
                 balance,
                 deleted
             FROM
-                stellar.core.fact_trust_lines A
+                {{ ref('core__fact_trust_lines') }} A
                 JOIN ver_tokens b USING(
                     asset_issuer,
                     asset_code
@@ -106,7 +101,7 @@ SELECT
     balance,
     deleted
 FROM
-    stellar.core.fact_accounts
+    {{ ref('core__fact_accounts') }}
 
 {% if is_incremental() %}
 WHERE
