@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: core__fact_daily_balances
+    description: |
+      Daily snapshot of token balances for each account/asset combination on the Stellar network.
+      This model creates a complete daily time series by forward-filling the most recent balance 
+      when there's no activity on a given day. If multiple balance updates occur within a day, 
+      only the last balance of that day is retained.
+      
+      Note: Currently filtered to verified tokens only. No data retention policy applied.
+    columns:
+      - name: balance_date
+        description: The date for this balance snapshot (UTC)
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: account_id
+        description: The Stellar account address holding the asset
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: asset_issuer
+        description: The account that issued this asset (null for native XLM) - lowercase normalized
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: asset_code
+        description: The asset code (e.g., USDC, XLM, etc.) - lowercase normalized
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: balance
+        description: |
+          The token balance at the end of the balance_date. 
+          Forward-filled from the most recent balance if no changes occurred.
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: is_deleted
+        description: Whether the trust line has been deleted (balance would be 0)
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: balance_changed_on_date
+        description: Boolean flag indicating if the balance actually changed on this date
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: daily_balance_change
+        description: The change in balance from the previous day
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: daily_balance_id
+        description: Unique identifier for this daily balance record
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: inserted_timestamp
+        description: Timestamp when this record was first inserted
+
+      
+      - name: modified_timestamp
+        description: Timestamp when this record was last modified
+
+      - name: _invocation_id
+        description: dbt invocation ID for debugging
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - account_id
+            - asset_issuer
+            - asset_code
+            - balance_date
+          where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+    
+      
+      - dbt_utils.recency:
+          datepart: day
+          field: balance_date
+          interval: 2
+          where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      

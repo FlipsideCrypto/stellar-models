@@ -1,0 +1,78 @@
+version: 2
+
+models:
+  - name: core__ez_daily_balances
+    description: |
+      Daily snapshot of token balances with USD valuations for each account/asset combination on the Stellar network.
+      This incremental table enriches the daily balance data with price information to calculate USD values.
+      Uses the last price of each day from the hourly price feed for end-of-day valuations. Retains only the last 100 days of data (older records are automatically deleted)
+
+    columns:
+      - name: balance_date
+        description: The date for this balance snapshot (UTC)
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: account_id
+        description: The Stellar account address holding the asset
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: asset_issuer
+        description: The account that issued this asset (NULL for native XLM) - lowercase normalized
+      
+      - name: asset_code
+        description: The asset code (NULL for native XLM) - lowercase normalized
+      
+      - name: symbol
+        description: The token symbol from the price feed metadata
+      
+      - name: balance
+        description: The token balance (already adjusted for decimals in the fact table)
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: balance_usd
+        description: The USD value of the token balance (balance * price_usd)
+      
+      - name: daily_balance_change
+        description: The change in balance from the previous day (already adjusted for decimals)
+      
+      - name: daily_balance_change_usd
+        description: The USD value of the daily balance change
+      
+      - name: balance_changed_on_date
+        description: Boolean flag indicating if the balance actually changed on this date
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: is_native
+        description: Whether this is the native XLM asset
+      
+      - name: token_is_verified
+        description: Whether this asset is verified in the price feed
+      
+      - name: ez_daily_balances_id
+        description: Unique identifier for this daily balance record
+        tests:
+          - not_null:
+              where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
+      
+      - name: inserted_timestamp
+        description: Timestamp when this record was first inserted
+      
+      - name: modified_timestamp
+        description: Timestamp when this record was last modified
+    
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - account_id
+            - asset_issuer
+            - asset_code
+            - balance_date
+          where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
