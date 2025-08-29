@@ -54,8 +54,8 @@ AND balance_date >= '{{ min_balance_date }}' :: DATE
 hourly_prices AS (
     SELECT
         HOUR :: DATE AS price_date,
-        asset_issuer,
-        asset_code,
+        LOWER(asset_issuer) AS asset_issuer,
+        LOWER(asset_code) AS asset_code,
         symbol,
         decimals,
         is_native,
@@ -71,8 +71,8 @@ WHERE
 
 qualify ROW_NUMBER() over (
     PARTITION BY price_date,
-    asset_issuer,
-    asset_code
+    LOWER(asset_issuer),
+    LOWER(asset_code)
     ORDER BY
         HOUR DESC
 ) = 1
@@ -104,10 +104,8 @@ FROM
     LEFT JOIN hourly_prices p
     ON db.balance_date = p.price_date
     AND (
-        (
-            db.asset_issuer = p.asset_issuer
-            AND db.asset_code = p.asset_code
-        )
+        (LOWER(db.asset_issuer) = p.asset_issuer
+        AND LOWER(db.asset_code) = p.asset_code)
         OR (
             db.asset_issuer = 'native'
             AND db.asset_code = 'native'
