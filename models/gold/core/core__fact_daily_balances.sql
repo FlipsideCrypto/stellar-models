@@ -36,8 +36,8 @@ latest_balances_from_table AS (
     SELECT
         account_id,
         balance_date,
-        asset_issuer,
-        asset_code,
+        UPPER(asset_issuer) AS asset_issuer,
+        UPPER(asset_code) AS asset_code,
         balance,
         is_deleted
     FROM
@@ -54,8 +54,8 @@ latest_balances_from_table AS (
 
 ver_tokens AS (
     SELECT
-        asset_issuer,
-        asset_code
+        UPPER(asset_issuer) AS asset_issuer,
+        UPPER(asset_code) AS asset_code
     FROM
         stellar.price.ez_asset_metadata
     WHERE
@@ -70,13 +70,13 @@ source_data AS (
                 account_id,
                 closed_at,
                 closed_at :: DATE AS snapshot_date,
-                asset_issuer,
-                asset_code,
+                A.asset_issuer,
+                A.asset_code,
                 balance,
                 deleted
             FROM
                 {{ ref('core__fact_trust_lines') }} A
-                JOIN ver_tokens b USING(
+                JOIN ver_tokens b USING (
                     asset_issuer,
                     asset_code
                 )
