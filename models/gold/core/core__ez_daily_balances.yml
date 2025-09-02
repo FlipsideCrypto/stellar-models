@@ -22,10 +22,10 @@ models:
               where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
       
       - name: asset_issuer
-        description: The account that issued this asset (NULL for native XLM) - lowercase normalized
+        description: The account that issued this asset (NULL for native XLM) - uppercase normalized
       
       - name: asset_code
-        description: The asset code (NULL for native XLM) - lowercase normalized
+        description: The asset code (NULL for native XLM) - uppercase normalized
       
       - name: symbol
         description: The token symbol from the price feed metadata

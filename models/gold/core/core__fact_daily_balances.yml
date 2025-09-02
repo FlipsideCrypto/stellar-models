@@ -8,7 +8,7 @@ models:
       when there's no activity on a given day. If multiple balance updates occur within a day, 
       only the last balance of that day is retained.
       
-      Note: Currently filtered to verified tokens only. No data retention policy applied.
+      Note: Currently filtered to verified tokens only. No automatic data retention policy applied - all historical data is preserved.
     columns:
       - name: balance_date
         description: The date for this balance snapshot (UTC)
@@ -23,13 +23,13 @@ models:
               where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
       
       - name: asset_issuer
-        description: The account that issued this asset (null for native XLM) - lowercase normalized
+        description: The account that issued this asset ('native' for XLM) - uppercase normalized
         tests:
           - not_null:
               where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"
       
       - name: asset_code
-        description: The asset code (e.g., USDC, XLM, etc.) - lowercase normalized
+        description: The asset code (e.g., USDC, 'native' for XLM) - uppercase normalized
         tests:
           - not_null:
               where: "modified_timestamp > current_date - {{ var('test_days_threshold', 3) }}"

@@ -130,7 +130,7 @@ SELECT
     asset_issuer,
     asset_code,
     balance,
-    is_deleted AS deleted,
+    is_deleted AS deleted
 FROM
     latest_balances_from_table
 {% endif %}
