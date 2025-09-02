@@ -57,7 +57,7 @@ ver_tokens AS (
         UPPER(asset_issuer) AS asset_issuer,
         UPPER(asset_code) AS asset_code
     FROM
-        stellar.price.ez_asset_metadata
+        {{ ref('price__ez_asset_metadata') }}
     WHERE
         is_verified
 ),

@@ -6,6 +6,7 @@ models:
       Daily snapshot of token balances with USD valuations for each account/asset combination on the Stellar network.
       This incremental table enriches the daily balance data with price information to calculate USD values.
       Uses the last price of each day from the hourly price feed for end-of-day valuations. Retains only the last 100 days of data (older records are automatically deleted)
+      This table only contains balances for verified assets
 
     columns:
       - name: balance_date
