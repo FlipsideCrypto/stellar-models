@@ -18,3 +18,9 @@ venv/
 .env
 .DS_Store
 .user.yml
+
+.claude/log/*
+.claude/settings.local.json
+CLAUDE.md
+
+.cursor/mcp.json
