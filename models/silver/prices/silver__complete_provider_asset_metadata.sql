@@ -80,4 +80,15 @@ SELECT
     {{ dbt_utils.generate_surrogate_key(['complete_provider_asset_metadata_id']) }} AS complete_provider_asset_metadata_id,
     '{{ invocation_id }}' AS _invocation_id
 FROM
-    base
+    base qualify ROW_NUMBER() over (
+        PARTITION BY provider_asset_id,
+        asset_issuer,
+        asset_code,
+        NAME,
+        symbol,
+        platform,
+        platform_id,
+        provider
+        ORDER BY
+            _inserted_timestamp DESC
+    ) = 1
