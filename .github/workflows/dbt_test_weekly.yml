@@ -4,7 +4,7 @@ run-name: dbt_test_weekly
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 4 * * 1'
+    - cron: '0 7 * * 1'
     
 env:
   DBT_PROFILES_DIR: ./
