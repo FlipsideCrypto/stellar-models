@@ -51,13 +51,13 @@ models:
         description: The account address of the original asset issuer that created the asset.
 
       - name: amount
-        description: The normalized float amount of the asset. Raw amount of asset divided by 0.0000001.
+        description: The normalized float amount of the asset in standard units. Raw stroop values are divided by 10,000,000 (10^7) to convert to human-readable token amounts. This conversion applies to all Stellar assets (XLM, BENJI, FOBXX, etc.) as the Stellar protocol uses 7 decimal places for all assets.
         tests:
           - not_null:
               where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
 
       - name: amount_raw
-        description: The raw stroop amount of the asset.
+        description: The raw stroop amount of the asset as stored on-chain. Stroops are Stellar's base unit (similar to wei in Ethereum or satoshis in Bitcoin), where 1 XLM = 10,000,000 stroops. This field preserves the exact on-chain representation before decimal adjustment.
         tests:
           - not_null:
               where: batch_insert_ts > current_date - {{ var('test_days_threshold', 3) }}
